@@ -1,0 +1,19 @@
+.notification-dropdown {
+    margin-left: -250px;
+    display: none;
+}
+
+.btn-notification:hover .notification-dropdown {
+    display: block
+}
+
+.account-header {
+    margin-left: -70px;
+    display: none;
+    margin-top: 30px;
+
+}
+
+.btn-account-header:hover .account-header {
+    display: block
+}

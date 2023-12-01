@@ -1,0 +1,7 @@
+#disclosure-1 {
+    display: none;
+}
+
+#disclosure:hover > #disclosure-1 {
+    display: block;
+}
