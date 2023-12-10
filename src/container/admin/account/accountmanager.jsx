@@ -1,11 +1,50 @@
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import LayoutAdmin from "../layout";
-
+import validator from "validator";
+import { register } from "../../../thunks/AuthThunk";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllRole } from "../../../thunks/RoleThunk";
+import { addUser } from "../../../thunks/UserThunk";
+import { setActionStatus } from "../../../slices/AuthSlice";
+import styled from "styled-components";
+const ErrorText = styled.div`
+  color: red;
+  text-align: start;
+`;
 function AccountManager() {
   const [isHiddenDelete, setIsHiddenDelete] = useState(true);
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(true);
   const [isHiddenCreate, setIsHiddenCreate] = useState(true);
+
+  const [fullName, setFullName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [roleName, setRoleName] = useState("");
+  const [managerId, setManagerId] = useState("");
+
+  
+  const { allRole } = useSelector((state) => state.roleReducer);
+  const { actionStatusCode } = useSelector((state) => state.authReducer);
+
+  const dispatch = useDispatch();
+  const initError = {
+    isErrorUserName: false,
+    isErrorPassword: false,
+    isErrorEmail: false,
+    isErrorPhone: false,
+
+    messageErrorUserName: "",
+    messageErrorEmail: "",
+    messageErrorPassword: "",
+    messageErrorPhone: "",
+  };
+  
+  useLayoutEffect(() => {
+    dispatch(getAllRole());
+  }, []);
   const handleHiddenDelete = () => {
     setIsHiddenDelete(!isHiddenDelete);
   };
@@ -15,6 +54,96 @@ function AccountManager() {
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
   };
+  const [error, setError] = useState(initError);
+  const onClickRegister = () => {
+    if (fullName.length === 0) {
+      return setError(
+        (pre) =>
+          (pre = {
+            ...pre,
+            isErrorUserName: true,
+            messageErrorUserName: "Không được bỏ trống",
+          })
+      );
+    }
+    if (email.length === 0) {
+      return setError(
+        (pre) =>
+          (pre = {
+            ...pre,
+            isErrorEmail: true,
+            messageErrorEmail: "không được bỏ trống",
+          })
+      );
+    }
+    if (phone.length === 0) {
+      return setError(
+        (pre) =>
+          (pre = {
+            ...pre,
+            isErrorPhone: true,
+            messageErrorPhone: "không được bỏ trống",
+          })
+      );
+    }
+    if (password.length === 0) {
+      return setError(
+        (pre) =>
+          (pre = {
+            ...pre,
+            isErrorPassword: true,
+            messageErrorPassword: "không được bỏ trống",
+          })
+      );
+    }
+    if (password !== confirmPassword) {
+      return setError(
+        (pre) =>
+          (pre = {
+            ...pre,
+            isErrorPassword: true,
+            messageErrorPassword: "mật khẩu không giống nhau",
+          })
+      );
+    }
+    if (!validator.isEmail(email)) {
+      return setError(
+        (pre) =>
+          (pre = {
+            ...pre,
+            isErrorEmail: true,
+            messageErrorEmail: "địa chỉ email không đúng định dạng",
+          })
+      );
+    }
+   
+    setError(initError);
+    const data = {
+      fullName: fullName,
+      phone: phone,
+      username: email,
+      phone: phone,
+      roleName: roleName,
+      managerId: managerId,
+      password:password,
+      email: email
+    }
+    dispatch(addUser(data));
+    
+  };
+
+  useEffect(() => {
+    if (actionStatusCode === 200) {
+      setIsHiddenCreate(true);
+      setFullName("");
+      setEmail("");
+      setPhone("");
+      setPassword("");
+      setConfirmPassword("")
+      setRoleName("")
+      dispatch(setActionStatus(0));
+    }
+  }, [actionStatusCode]);
   return (
     <LayoutAdmin>
       <div className="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 ">
@@ -582,28 +711,19 @@ function AccountManager() {
                     <input
                       type="text"
                       name="fullName"
-                      defaultValue=""
+                      value={fullName}
                       id="fullName"
+                      onChange={(e) => setFullName(e.target.value)}
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                       required
                     />
+                    {error.isErrorUserName && (
+                  <ErrorText className="text-xs form-text danger">
+                    {error.messageErrorUserName}
+                  </ErrorText>
+                )}
                   </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="username"
-                      className="block mb-2 text-sm font-medium text-gray-900 "
-                    >
-                      Tên đăng nhập
-                    </label>
-                    <input
-                      type="text"
-                      name="username"
-                      defaultValue=""
-                      id="username"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                      required
-                    />
-                  </div>
+                 
                   <div className="col-span-6 sm:col-span-3">
                     <label
                       htmlFor="email"
@@ -614,8 +734,69 @@ function AccountManager() {
                     <input
                       type="email"
                       name="email"
-                      defaultValue=""
+                      value={email}
                       id="email"
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                      required
+                    />
+                     <ErrorText className="text-xs form-text danger">
+                    {error.messageErrorEmail}
+                  </ErrorText>
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="email"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Phone
+                    </label>
+                    <input
+                      type="text"
+                      name="phone"
+                      value={phone}
+                      id="phone"
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                      required
+                    />
+                     <ErrorText className="text-xs form-text danger">
+                    {error.messageErrorPhone}
+                  </ErrorText>
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="email"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={password}
+                      id="password"
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                      required
+                    />
+                     <ErrorText className="text-xs form-text danger">
+                    {error.messageErrorPassword}
+                  </ErrorText>
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="email"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Confirm Password
+                    </label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={confirmPassword}
+                      id="confirmPassword"
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                       required
                     />
@@ -629,49 +810,26 @@ function AccountManager() {
                     </label>
                     <select
                       id="category-create"
+                      onChange={(e) => {
+                        setRoleName(e.target.value);
+                      }}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                     >
                       <option selected=""></option>
-                      <option defaultValue="FL">Giảng viên</option>
-                      <option defaultValue="RE">Nhân viên</option>
-                      <option defaultValue="AN">Lãnh đạo khoa</option>
-                      <option defaultValue="VU">Admin</option>
+                      {allRole.map((item) => {
+                        return (
+                          <option value={item.roleName} id={item.id}>{item.roleName}</option>
+                        )
+                      })}
+                      
                     </select>
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="password"
-                      className="block mb-2 text-sm font-medium text-gray-900 "
-                    >
-                      Mật khẩu
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      defaultValue=""
-                      id="password"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                      required
-                    />
-                  </div>
-                  <div className="col-span-6">
-                    <label
-                      htmlFor="biography"
-                      className="block mb-2 text-sm font-medium text-gray-900 "
-                    >
-                      Giới thiệu
-                    </label>
-                    <textarea
-                      id="biography"
-                      rows="4"
-                      className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
-                    ></textarea>
                   </div>
                 </div>
                 <div className="items-center p-6 border-t border-gray-200 rounded-b ">
                   <button
                     className=" bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                    type="submit"
+                      type="button"
+                    onClick={onClickRegister}
                   >
                     Thêm
                   </button>

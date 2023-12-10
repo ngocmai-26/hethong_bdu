@@ -2,6 +2,7 @@ import { useState } from "react";
 import Profile from ".";
 
 function Account() {
+  const info = JSON.parse(localStorage.getItem('auth_info'))
   const [hiddenChangePassword, setHiddenChangePassword] = useState(true);
   const handleChangePassword = () => {
     setHiddenChangePassword(!hiddenChangePassword);
@@ -48,7 +49,7 @@ function Account() {
                     <input
                       type="text"
                       name="fullName"
-                      defaultValue="Bonnie"
+                      value={info?.fullName}
                       id="fullName"
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
                       placeholder="Bonnie"
@@ -89,7 +90,7 @@ function Account() {
                     <input
                       type="email"
                       name="email"
-                      defaultValue="mai@gmail.com"
+                      value={info?.email}
                       id="email"
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
                       placeholder="mai@gmail.com"
@@ -107,7 +108,7 @@ function Account() {
                     <input
                       type="text"
                       name="phone"
-                      defaultValue="0378455662"
+                      value={info?.phone}
                       id="phone"
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
                       placeholder="Nhập vào số điện thoại"

@@ -7,7 +7,9 @@ import { logout } from "../../../slices/AuthSlice";
 import { useDispatch } from "react-redux";
 
 function Header() {
+  const info = JSON.parse(localStorage.getItem('auth_info'))
   const [openMenu, setOpenMenu] = useState(false);
+  
   
   const dispatch = useDispatch();
   const handleOpenMenu = () => {
@@ -144,7 +146,7 @@ function Header() {
                   />
                 </div>
 
-                <span className="px-2 my-auto">Nguyễn Thị Ngọc Mai</span>
+                <span className="px-2 my-auto">{info.fullName}</span>
                 <FontAwesomeIcon
                   icon={faChevronDown}
                   style={{ fontSize: "10px" }}
@@ -163,14 +165,7 @@ function Header() {
                     Thông tin tài khoản
                   </Link>
                 </li>
-                <li className="hover:bg-gray-50 w-full mt-0">
-                  <Link
-                    to="/manager-users"
-                    className="block py-1 text-sm font-semibold leading-8 text-gray-900 w-full px-2 "
-                  >
-                    Quản lý tài khoản
-                  </Link>
-                </li>
+               
                 <li className="hover:bg-gray-50 w-full mt-0">
                   <a
                     href="#"
@@ -254,7 +249,7 @@ function Header() {
                   to="/note-list"
                   className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0"
                 >
-                  Kế hoạch (Note)
+                  Kế hoạch công việc
                 </Link>
               </li>
             </ul>

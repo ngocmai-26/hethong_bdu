@@ -610,7 +610,7 @@ function TaskList() {
                               className="input_todo w-full shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-2"
                               value={todo}
                               rows="7"
-                              placeholder="Enter todo..."
+                              placeholder="Công việc đã hoàn thành"
                               onChange={(e) => setTodo(e.target.value)}
                             />
                           </div>

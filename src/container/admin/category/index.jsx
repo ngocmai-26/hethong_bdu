@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import LayoutAdmin from "../layout";
+import { useDispatch, useSelector } from "react-redux";
+import {  getAllPermissions } from "../../../thunks/PermissionsThunk";
 
 function Category() {
   const [isHiddenDelete, setIsHiddenDelete] = useState(true);
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(true);
   const [isHiddenCreate, setIsHiddenCreate] = useState(true);
+  const { allPermission } = useSelector((state) => state.permissionsReducer);
+  const dispatch = useDispatch();
   const handleHiddenDelete = () => {
     setIsHiddenDelete(!isHiddenDelete);
   };
@@ -15,6 +19,13 @@ function Category() {
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
   };
+  useLayoutEffect(() => {
+    if (allPermission.length <= 0) {
+      dispatch(getAllPermissions());
+    }
+  }, []);
+
+  console.log(allPermission)
   return (
     <LayoutAdmin>
       <div className="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 ">
@@ -129,12 +140,6 @@ function Category() {
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
                     >
-                      Mã số chức năng
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
-                    >
                       Tên chức năng
                     </th>
                     <th
@@ -152,7 +157,10 @@ function Category() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  <tr className="hover:bg-gray-100">
+                {allPermission?.response?.map((item) => {
+                      return (
+                        <tr className="hover:bg-gray-100">
+                    
                     <td className="w-4 p-4">
                       <div className="flex items-center">
                         <input
@@ -168,19 +176,15 @@ function Category() {
                     </td>
                     <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
                       <div className="text-base font-semibold text-gray-900">
-                        1
+                        {item.id}
                       </div>
                     </td>
                     <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                      technology
+                      {item.permissionName}
                     </td>
 
                     <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                      maibaby
-                    </td>
-
-                    <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                      17:55:00
+                    {item.description}
                     </td>
 
                     <td className="p-4 space-x-2 whitespace-nowrap">
@@ -235,6 +239,9 @@ function Category() {
                       </button>
                     </td>
                   </tr>
+                      )
+                    })}
+                  
                 </tbody>
               </table>
             </div>

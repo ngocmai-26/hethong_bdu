@@ -21,9 +21,12 @@ import Expertise from "../container/user/kpi/expertise.jsx";
 import Category from "../container/admin/category/index.jsx";
 import AccountManager from "../container/admin/account/accountmanager.jsx";
 import CategoryKPI from "../container/admin/kpicategory/index.jsx";
-import CategoryTarget from "../container/admin/target/index.jsx";
+import CategoryTarget from "../container/admin/roles/index.jsx";
 import { useSelector } from "react-redux";
 import { useLayoutEffect } from "react";
+import JobManager from "../container/user/tasks/jobmanager.jsx";
+import RolesDetail from "../container/admin/roles/roles-detail.jsx";
+import KPICateDetail from "../container/admin/kpicategory/kpi-cate-detail.jsx";
 
   
 export const GeneralRoute = () => {
@@ -56,11 +59,14 @@ export const LoggedRoute = () => {
       <Route path="/note-list" element={<ListNote />}></Route>
       <Route path="/detail-task" element={<DetailTask />}></Route>
       <Route path="/target" element={<Target />}></Route>
+      <Route path="/roles/:id" element={<RolesDetail />}></Route>
       <Route path="/note-done" element={<NoteDone />}></Route>
       <Route path="/expertise" element={<Expertise />}></Route>
-      <Route path="/category" element={<Category />}></Route>
-      <Route path="/category-kpi" element={<CategoryKPI />}></Route>
-      <Route path="/category-target" element={<CategoryTarget />}></Route>
+      <Route path="/permissions" element={<Category />}></Route>
+      <Route path="/kpi_categories" element={<CategoryKPI />}></Route>
+      <Route path="/kpi_categories_detail/:id" element={<KPICateDetail />}></Route>
+      <Route path="/category-role" element={<CategoryTarget />}></Route>
+      <Route path="/quan-ly-bao-cao-cong-viec" element={<JobManager />}></Route>
       <Route path="*" element={role?.id === 1?  <AccountManager />: <DashBoard />}></Route>
     </Routes>
   );
@@ -72,6 +78,7 @@ function Router() {
   return (
     <BrowserRouter>
       {!logged ? <GeneralRoute /> : <LoggedRoute />}
+      {/* <LoggedRoute /> */}
     </BrowserRouter>
   );
 }

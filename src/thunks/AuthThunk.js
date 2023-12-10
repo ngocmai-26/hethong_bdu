@@ -2,7 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { API } from '../constants/api'
 
 import { setAlert } from '../slices/AlertSlice'
-import { logout, setRefresh } from '../slices/AuthSlice'
+import { setRefresh } from '../slices/AuthSlice'
+
 
 export const login = createAsyncThunk(
   '/public/auth/login',
@@ -39,3 +40,4 @@ export const login = createAsyncThunk(
     }
   },
 )
+

@@ -5,6 +5,7 @@ const initState = {
   authToken: '',
   user: {},
   refresh: false,
+  actionStatusCode: 0,
 }
 const AuthSlice = createSlice({
   name: 'auth',
@@ -20,6 +21,9 @@ const AuthSlice = createSlice({
       state.user = payload
       
       localStorage.setItem('auth_info', JSON.stringify(payload))
+    },
+    setActionStatus: (state, { payload }) => {
+      state.actionStatusCode = payload
     },
     setRefresh: (state, { payload }) => {
       state.refresh = payload
@@ -50,6 +54,7 @@ export const {
   loadUser,
   logout,
   setRefresh,
+  setActionStatus,
   setUser,
 } = AuthSlice.actions
 

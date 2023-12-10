@@ -4,12 +4,16 @@ import {
   faBookBookmark,
   faBookReader,
   faCheck,
+  faColumns,
+  faListCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import Layout from "../layout";
 
 function LayoutTask({ children }) {
+  const role = JSON.parse(localStorage.getItem('auth_role'))
+
   const [isHiddenCreate, setIsHiddenCreate] = useState(true);
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
@@ -50,7 +54,7 @@ function LayoutTask({ children }) {
                   to="/task-list"
                   className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
                 >
-                  <FontAwesomeIcon icon={faAlignLeft} className="me-1" />
+                <FontAwesomeIcon icon={faListCheck} className="me-1" />
                   Danh sách công việc
                 </Link>
               </li>
@@ -59,10 +63,22 @@ function LayoutTask({ children }) {
                   to="/task-board"
                   className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
                 >
-                  <FontAwesomeIcon icon={faAlignLeft} className="me-1" />
+                <FontAwesomeIcon icon={faColumns} className="me-1" />
                   Bảng công việc
                 </Link>
               </li>
+              {role.id === 3? (
+                <li className="hover:bg-gray-50 mt-0 px-2">
+                <Link
+                  to="/quan-ly-bao-cao-cong-viec"
+                  className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
+                >
+                  <FontAwesomeIcon icon={faAlignLeft} className="me-1" />
+                  Báo cáo công việc
+                </Link>
+              </li>
+              ): (<></>)}
+              
             </ul>
             <form className="sm:pr-3 px-4 sm:px-0" action="#" method="GET">
               <label htmlFor="accounts-search" className="sr-only">

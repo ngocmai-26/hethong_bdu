@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../layout";
 
 function Profile({children}) {
+  const role = JSON.parse(localStorage.getItem('auth_role'))
 
   return (
     <Layout>
@@ -39,11 +40,16 @@ function Profile({children}) {
                       Cài đặt của tôi
                     </Link>
                   </li>
-                  <li className="px-2">
+                  {
+                    role.id === 3? (
+                      <li className="px-2">
                     <Link to='/manager-users' className="text-xs font-medium">
                       Quản lý nhân viên
                     </Link>
                   </li>
+                    ): (<></>)
+                  }
+                  
                 </ul>
               </div>
               {children}
