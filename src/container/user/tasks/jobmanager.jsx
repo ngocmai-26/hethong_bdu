@@ -1,12 +1,21 @@
 import { Link } from "react-router-dom";
 import LayoutTask from ".";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllJob } from "../../../thunks/JobsThunk";
 
 function JobManager() {
+  const { allJob } = useSelector((state) => state.jobsReducer);
+  const dispatch = useDispatch();
   const [hidden, isHidden] = useState(true);
   const handleHidden = () => {
     isHidden(!hidden);
   };
+  useLayoutEffect(() => {
+    if (allJob.length <= 0) {
+      dispatch(getAllJob());
+    }
+  }, []);
   return (
     <LayoutTask>
       <div className="flex flex-col">
@@ -59,6 +68,7 @@ function JobManager() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
+                
                   <tr className="">
                     <td className="w-4 p-4">
                       <div className="flex items-center">

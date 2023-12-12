@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
   faAlignLeft,
   faBookBookmark,
@@ -10,18 +10,35 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import Layout from "../layout";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllRole } from "../../../thunks/RoleThunk";
 
 function LayoutTask({ children }) {
   const role = JSON.parse(localStorage.getItem('auth_role'))
+  const { allRole } = useSelector((state) => state.roleReducer);
+  const dispatch = useDispatch();
 
   const [isHiddenCreate, setIsHiddenCreate] = useState(true);
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
   };
+  useLayoutEffect(() => {
+    dispatch(getAllRole());
+  }, []);
 
   const [todo, setTodo] = useState("");
   const [target, setTarget] = useState(0);
   const [state, setState] = useState([]);
+
+  //Thêm jobs
+  
+  const [title, setTitle] = useState("");
+  const [kpi, setKpi] = useState(0);
+  const [priority, setPriority] = useState(0);
+  const [status, setStatus] = useState(0);
+  const [isTask, setIsTask] = useState(true);
+  const [staff, setStaff] = useState("");
+  const [receiver, setReceiver] = useState("");
 
   const handleSubmit = () => {
     if (todo === "") {
@@ -173,41 +190,19 @@ function LayoutTask({ children }) {
                               htmlFor="category-create"
                               className="block mb-2 text-xs font-medium text-gray-900"
                             >
-                              Thời gian dự kiến
+                              Trạng thái công việc
                             </label>
                             <select
                               id="category-create"
+                              onChange={(e) => setState(e.target.value)}
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                             >
                               <option selected=""></option>
-                              <option defaultValue="0h30">0h30 min</option>
-                              <option defaultValue="1h00">1h00 min</option>
-                              <option defaultValue="1h30">1h30 min</option>
-                              <option defaultValue="2h00">2h00 min</option>
-                              <option defaultValue="2h30">2h30 min</option>
-                              <option defaultValue="3h00">3h00 min</option>
-                              <option defaultValue="3h30">3h30 min</option>
-                              <option defaultValue="4h00">4h00 min</option>
-                              <option defaultValue="4h30">4h30 min</option>
-                              <option defaultValue="5h00">5h00 min</option>
-                              <option defaultValue="5h30">5h30 min</option>
-                              <option defaultValue="6h00">6h00 min</option>
-                              <option defaultValue="6h30">6h30 min</option>
-                              <option defaultValue="7h00">7h00 min</option>
-                              <option defaultValue="7h30">7h30 min</option>
-                              <option defaultValue="8h00">8h00 min</option>
-                              <option defaultValue="8h30">8h30 min</option>
-                              <option defaultValue="9h00">9h00 min</option>
-                              <option defaultValue="9h30">9h30 min</option>
-                              <option defaultValue="10h00">10h00 min</option>
-                              <option defaultValue="12h00">12h00 min</option>
-                              <option defaultValue="14h00">14h00 min</option>
-                              <option defaultValue="16h00">16h00 min</option>
-                              <option defaultValue="18h00">18h00 min</option>
-                              <option defaultValue="20h00">20h00 min</option>
-                              <option defaultValue="22h00">22h00 min</option>
-                              <option defaultValue="24h00">24h00 min</option>
-                              <option defaultValue="other">other</option>
+                              <option value="1">Kế hoạch</option>
+                              <option value="2">Đang tiến hành</option>
+                              <option value="3">Đến hạn</option>
+                              <option value="4">Hoàn thành</option>
+                              
                             </select>
                           </div>
                           <div className="col-span-2">
@@ -242,6 +237,7 @@ function LayoutTask({ children }) {
                         <input
                           type="text"
                           name="title"
+                          onChange={(e) => setTitle(e.target.value)}
                           defaultValue=""
                           id="title"
                           className="shadow-sm me-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
@@ -250,13 +246,14 @@ function LayoutTask({ children }) {
                         />
                         <select
                           id="category-create"
+                          onChange={(e)=>setPriority(+e.target.value)}
                           className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                         >
                           <option selected="">Mức độ</option>
-                          <option defaultValue="FL">Cần gấp</option>
-                          <option defaultValue="RE">Quan trọng</option>
-                          <option defaultValue="AN">Bình thường</option>
-                          <option defaultValue="VU">Ưu tiên sau</option>
+                          <option value="1" >Cần gấp</option>
+                          <option value="2">Quan trọng</option>
+                          <option value="3">Bình thường</option>
+                          <option value="4">Ưu tiên sau</option>
                         </select>
                       </div>
                       <div className="information-plan mt-2">
@@ -359,7 +356,8 @@ function LayoutTask({ children }) {
                       </form>
                       <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                         <div className="h-auto ">
-                          <div className="users-item flex py-1 px-2 ">
+                          {allRole.filter((item) => item.roleName !== "ADMIN" && item.roleName !== "MANAGER" ? (
+                            <div className="users-item flex py-1 px-2 ">
                             <div className="avatar w-2/12 ">
                               <img
                                 src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
@@ -373,138 +371,10 @@ function LayoutTask({ children }) {
                               </span>
                             </div>
                           </div>
-                          <div className="users-item flex py-1 px-2 ">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                          </div>
-                          <div className="users-item flex py-1 px-2 ">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                          </div>
-                          <div className="users-item flex py-1 px-2 ">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                          </div>
-                          <div className="users-item flex py-1 px-2 ">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                          </div>
-                          <div className="users-item flex py-1 px-2 ">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                          </div>
-                          <div className="users-item flex py-1 px-2 ">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                          </div>
-                          <div className="users-item flex py-1 px-2 ">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                          </div>
-                          <div className="users-item flex py-1 px-2 ">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                          </div>
-                          <div className="users-item flex py-1 px-2 bg-sky-50">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                            <div className="check my-auto">
-                              <FontAwesomeIcon
-                                icon={faCheck}
-                                className="text-sky-500"
-                              />
-                            </div>
-                          </div>
+                          ): (
+                            <></>
+                          ))}
+                          
                         </div>
                       </div>
                       <span className="text-xs font-medium">

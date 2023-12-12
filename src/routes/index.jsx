@@ -57,7 +57,7 @@ export const LoggedRoute = () => {
       <Route path="/manager-account" element={<AccountManager />}></Route>
       <Route path="/request-kpi" element={<RequestKPI />}></Route>
       <Route path="/note-list" element={<ListNote />}></Route>
-      <Route path="/detail-task" element={<DetailTask />}></Route>
+      <Route path="/jobs/:id" element={<DetailTask />}></Route>
       <Route path="/target" element={<Target />}></Route>
       <Route path="/roles/:id" element={<RolesDetail />}></Route>
       <Route path="/note-done" element={<NoteDone />}></Route>

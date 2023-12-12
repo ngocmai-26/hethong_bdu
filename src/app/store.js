@@ -4,6 +4,7 @@ import AlertReducer from "../slices/AlertSlice.js";
 import RoleReducer from "../slices/RoleSlice.js";
 import PermissionsReducer from "../slices/PermissionsSlice.js";
 import KpiCategoriesReducer from "../slices/KPICategoriesSlide.js";
+import jobsReducer from "../slices/JobsSlice.js";
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
       roleReducer: RoleReducer,
       permissionsReducer: PermissionsReducer,
       kpiCategoriesReducer: KpiCategoriesReducer,
+      jobsReducer: jobsReducer,
 
     },
     middleware: (getDefaultMiddleware) =>

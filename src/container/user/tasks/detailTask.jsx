@@ -1,8 +1,25 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LayoutTask from ".";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { deleteRole } from "../../../thunks/RoleThunk";
+import { deleteJob, getJobById } from "../../../thunks/JobsThunk";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLayoutEffect } from "react";
+import { priorities, status } from "../../../constants/fakedata";
 
 function DetailTask() {
+  const { id } = useParams();
+  const { singleJob} = useSelector((state) => state.jobsReducer);
+
+  const dispatch = useDispatch();
+  console.log(id)
+  useLayoutEffect(() => {
+    if (id) {
+      dispatch(getJobById(String(id)));
+    }
+  }, []);
+  console.log(singleJob)
   return (
     <LayoutTask>
       <div className="relative w-full h-full m-auto md:h-auto">
@@ -22,9 +39,10 @@ function DetailTask() {
                           htmlFor="category-create"
                           className="block text-xs font-medium text-gray-900"
                         >
-                          Thời gian dự kiến
+                          Trạng thái công việc
                         </label>
-                        <span className="text-xs">22h00 min</span>
+                        {status.map((item)=> item?.id === singleJob?.response?.status? <span className={`text-xs font-bold ${item.color}`}>{item.name}</span>: <></>)}
+                        
                       </div>
                       <div className="col-span-3">
                         <div className="grid grid-cols-2">
@@ -42,12 +60,12 @@ function DetailTask() {
                   </div>
                   <div className="py-2">
                     <p className="text-xs font-medium">Trạng thái</p>
-                    <p className="text-xs ">Ưu tiên cao</p>
+                    {priorities.map((item)=> item?.id === singleJob?.response?.priority? <p className={`text-xs font-bold ${item.color}`}>{item.name}</p>: <></>)}
+                    
                   </div>
                   <div className="information-plan mt-2 flex justify-between">
                     <span className="text-base font-medium">
-                      Review team holiday schedule Review team holiday schedule
-                      Review team holiday schedule
+                      {singleJob?.response?.title}
                     </span>
                   </div>
                   <div className="information-plan mt-2">
@@ -160,6 +178,17 @@ function DetailTask() {
                 </div>
               </div>
               <div className="items-center p-6 border-gray-200 rounded-b text-right">
+                <button
+                  className="me-2 bg-red-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-sm  text-sm px-5 py-1.5 text-center"
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm("Bạn có muốn xóa công việc này")) {
+                      dispatch(deleteJob(String(singleJob.response.id)));
+                    }
+                  }}
+                >
+                  Xóa
+                </button>
                 <button
                   className=" bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-sm  text-sm px-5 py-1.5 text-center"
                   type="submit"

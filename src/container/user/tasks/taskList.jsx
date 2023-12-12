@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import LayoutTask from ".";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllJob } from "../../../thunks/JobsThunk";
+import { priorities, status } from "../../../constants/fakedata";
+
 
 function TaskList() {
+  const { allJob } = useSelector((state) => state.jobsReducer);
+
   const [isAccept, setIsAccept] = useState(false);
   const [isRefuse, setIsRefuse] = useState(false);
   const [isHiddenCreate, setIsHiddenCreate] = useState(true);
@@ -12,6 +18,7 @@ function TaskList() {
   const [target, setTarget] = useState(0);
   const [state, setState] = useState([]);
   const [isLink, setIsLink] = useState("");
+  const dispatch = useDispatch();
 
   const handleAccept = ({ item }) => {
     setIsAccept(!isAccept);
@@ -19,6 +26,12 @@ function TaskList() {
   const handleRefuse = ({ item }) => {
     setIsRefuse(!isRefuse);
   };
+
+  useLayoutEffect(() => {
+    if (allJob.length <= 0) {
+      dispatch(getAllJob());
+    }
+  }, []);
 
   const handleSendAccept = () => {
     setIsAccept(false);
@@ -42,6 +55,7 @@ function TaskList() {
     setState(list);
   };
 
+  console.log(allJob);
   return (
     <LayoutTask>
       <div className="flex flex-col">
@@ -98,7 +112,7 @@ function TaskList() {
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
                     >
-                      Báo cáo
+                      Hành động
                     </th>
                     <th
                       scope="col"
@@ -107,274 +121,93 @@ function TaskList() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  <tr className="">
-                    <td className="w-4 p-4">
-                      <div className="flex items-center">
-                        <input
-                          id="checkbox-{{ .id }}"
-                          aria-describedby="checkbox-1"
-                          type="checkbox"
-                          className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                        />
-                        <label htmlFor="checkbox-{{ .id }}" className="sr-only">
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
-                      <div className="text-xs font-medium text-gray-900">
-                        <span className="bg-lime-500 text-center rounded-sm text-white py-1 px-3 cursor-pointer">
-                          <span>Đang tiến hành</span>
-                        </span>
-                        <div></div>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        className="text-red-700 font-bold text-base"
-                      />
-                    </td>
-                    <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                      <Link to="/detail-task" className="underline">
-                        Review team holiday schedule
-                      </Link>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                      10/11/2023
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
-                        <div
-                          className="bg-blue-600 h-1 rounded-full dark:bg-blue-500"
-                          style={{ width: `${(10 / 50) * 100}%` }}
-                        ></div>
-                      </div>
-                    </td>
-                    <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <button className="bg-blue-500 text-white text-xs p-1">
-                        Báo cáo
-                      </button>
-                    </td>
-                    <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
-                  </tr>
-                  <tr className="">
-                    <td className="w-4 p-4">
-                      <div className="flex items-center">
-                        <input
-                          id="checkbox-{{ .id }}"
-                          aria-describedby="checkbox-1"
-                          type="checkbox"
-                          className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                        />
-                        <label htmlFor="checkbox-{{ .id }}" className="sr-only">
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
-                      <div className="text-xs font-medium text-gray-900">
-                        <span className="bg-lime-500 text-center rounded-sm text-white py-1 px-3 cursor-pointer">
-                          <span>Đang tiến hành</span>
-                        </span>
-                        <div></div>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        className="text-red-700 font-bold text-base"
-                      />
-                    </td>
-                    <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                      <Link to="/detail-task" className="underline">
-                        Review team holiday schedule
-                      </Link>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                      10/11/2023
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
-                        <div
-                          className="bg-blue-600 h-1 rounded-full dark:bg-blue-500"
-                          style={{ width: `${(10 / 50) * 100}%` }}
-                        ></div>
-                      </div>
-                    </td>
-                    <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <button className="bg-blue-500 text-white text-xs p-1">
-                        Báo cáo
-                      </button>
-                    </td>
-                    <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
-                  </tr>
-                  <tr className="">
-                    <td className="w-4 p-4">
-                      <div className="flex items-center">
-                        <input
-                          id="checkbox-{{ .id }}"
-                          aria-describedby="checkbox-1"
-                          type="checkbox"
-                          className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                        />
-                        <label htmlFor="checkbox-{{ .id }}" className="sr-only">
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
-                      <div className="text-xs font-medium text-gray-900">
-                        <span className="bg-purple-300 text-center rounded-sm text-white py-1 px-3 cursor-pointer">
-                          <span>Kế hoạch</span>
-                        </span>
-                        <div></div>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        className="text-red-700 font-bold text-base"
-                      />
-                    </td>
-                    <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                      <Link to="/detail-task" className="underline">
-                        Review team holiday schedule
-                      </Link>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                      10/11/2023
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
-                        <div
-                          className="bg-blue-600 h-1 rounded-full dark:bg-blue-500"
-                          style={{ width: `${(10 / 50) * 100}%` }}
-                        ></div>
-                      </div>
-                    </td>
-                    <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <button className="bg-blue-500 text-white text-xs p-1">
-                        Báo cáo
-                      </button>
-                    </td>
-                    <td className="p text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <button
-                        className="border-2 border-gray-100 rounded-full text-white text-xs"
-                        onClick={(item) => handleAccept(item)}
-                      >
-                        <FontAwesomeIcon
-                          icon={faCheck}
-                          className="text-gray-400 font-bold text-xs px-0.5"
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="">
-                    <td className="w-4 p-4">
-                      <div className="flex items-center">
-                        <input
-                          id="checkbox-{{ .id }}"
-                          aria-describedby="checkbox-1"
-                          type="checkbox"
-                          className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                        />
-                        <label htmlFor="checkbox-{{ .id }}" className="sr-only">
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
-                      <div className="text-xs font-medium text-gray-900">
-                        <span className="bg-red-500 text-center rounded-sm text-white py-1 px-3 cursor-pointer">
-                          <span>Đến hạn</span>
-                        </span>
-                        <div></div>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        className="text-red-700 font-bold text-base"
-                      />
-                    </td>
-                    <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                      <Link to="/detail-task" className="underline">
-                        Review team holiday schedule
-                      </Link>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                      10/11/2023
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
-                        <div
-                          className="bg-blue-600 h-1 rounded-full dark:bg-blue-500"
-                          style={{ width: `${(10 / 50) * 100}%` }}
-                        ></div>
-                      </div>
-                    </td>
-                    <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <button className="bg-blue-500 text-white text-xs p-1">
-                        Báo cáo
-                      </button>
-                    </td>
-                    <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
-                  </tr>
-                  <tr className="">
-                    <td className="w-4 p-4">
-                      <div className="flex items-center">
-                        <input
-                          id="checkbox-{{ .id }}"
-                          aria-describedby="checkbox-1"
-                          type="checkbox"
-                          className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                        />
-                        <label htmlFor="checkbox-{{ .id }}" className="sr-only">
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
-                      <div className="text-xs font-medium text-gray-900">
-                        <span className="bg-green-600 text-center rounded-sm text-white py-1 px-3 cursor-pointer">
-                          <span>Hoàn thành</span>
-                        </span>
-                        <div></div>
-                      </div>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        className="text-red-700 font-bold text-base"
-                      />
-                    </td>
-                    <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
-                      <Link to="/detail-task" className="underline">
-                        Review team holiday schedule
-                      </Link>
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
-                      10/11/2023
-                    </td>
-                    <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
-                        <div
-                          className="bg-blue-600 h-1 rounded-full dark:bg-blue-500"
-                          style={{ width: `${(10 / 50) * 100}%` }}
-                        ></div>
-                      </div>
-                    </td>
-                    <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                      <button
-                        className="bg-blue-500 text-white text-xs p-1"
-                        onClick={() => handleHiddenCreate()}
-                      >
-                        Báo cáo
-                      </button>
-                    </td>
-                    <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
-                  </tr>
+                  {allJob.map((item) => {
+                    return (
+                      <tr className="">
+                        <td className="w-4 p-4">
+                          <div className="flex items-center">
+                            <input
+                              id="checkbox-{{ .id }}"
+                              aria-describedby="checkbox-1"
+                              type="checkbox"
+                              className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
+                            />
+                            <label
+                              htmlFor="checkbox-{{ .id }}"
+                              className="sr-only"
+                            >
+                              checkbox
+                            </label>
+                          </div>
+                        </td>
+                        <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
+                          <div className="text-xs font-medium text-gray-900">
+                            {status.map((pre) =>
+                              pre.id === item.status ? (
+                                <span
+                                  className={`${pre.bg_color} text-center rounded-sm text-white py-1 px-3 cursor-pointer`}
+                                >
+                                  <span>{pre.name}</span>
+                                </span>
+                              ) : (
+                                <></>
+                              )
+                            )}
+
+                            <div></div>
+                          </div>
+                        </td>
+                        <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                          {priorities.map((pre) =>
+                            pre.id === item.priority ? (
+                              <FontAwesomeIcon
+                                icon={faCheck}
+                                className={`${pre.color} font-bold text-base`}
+                              />
+                            ) : (
+                              <></>
+                            )
+                          )}
+                        </td>
+                        <td className="max-w-sm p-4 overflow-hidden text-sm font-normal text-gray-500 truncate xl:max-w-xs">
+                          <Link to={`/jobs/${item.id}`} className="underline">
+                            {item.title}
+                          </Link>
+                        </td>
+                        <td className="p-4 text-sm font-medium text-gray-500 whitespace-nowrap">
+                          10/11/2023
+                        </td>
+                        <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                          <div className="w-full bg-gray-200 rounded-full h-1 my-2 dark:bg-gray-700">
+                            <div
+                              className="bg-blue-600 h-1 rounded-full dark:bg-blue-500"
+                              style={{ width: `${(10 / 50) * 100}%` }}
+                            ></div>
+                          </div>
+                        </td>
+                        <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                          {item.status === 1 ? (
+                            <>
+                              <button className="bg-blue-500 text-white text-xs p-1 mr-2">
+                                Nhận việc
+                              </button>
+                              <button className="bg-blue-500 text-white text-xs p-1">
+                                Từ chối
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              className="bg-blue-500 text-white text-xs p-1"
+                              onClick={() => handleHiddenCreate()}
+                            >
+                              Báo cáo
+                            </button>
+                          )}
+                        </td>
+                        <td className=" text-sm font-medium text-gray-900 whitespace-nowrap"></td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

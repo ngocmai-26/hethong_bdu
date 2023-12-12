@@ -1,31 +1,4 @@
 
-// export const getAllUser = createAsyncThunk(
-//     "admin/user/list",
-//     async (_, { dispatch, rejectWithValue }) => {
-//       try {
-//         const token = localStorage.getItem("auth_token");
-//         const resp = await fetch(`${API.uri}/admin/users/list`, {
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-//         if (resp.status < 200 || resp.status >= 400) {
-//           dispatch(
-//             setAlert({ type: "error", content: "Error when fetch user list" })
-//           );
-//           return rejectWithValue();
-//         }
-//         const jsonData = await resp.json();
-//         dispatch(setUsers(jsonData));
-//       } catch (e) {
-//         dispatch(
-//           setAlert({ type: "error", content: "Error when fetch user list" })
-//         );
-//       }
-//     }
-//   );
-
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setAlert } from "../slices/AlertSlice";
 import { API } from "../constants/api";
