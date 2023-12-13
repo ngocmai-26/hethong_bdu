@@ -10,6 +10,7 @@ const initState = {
   },
   listPermission: [],
   actionStatusCode: 0,
+  searchRole: [],
 };
 const RoleSlice = createSlice({
   name: "role",
@@ -34,9 +35,12 @@ const RoleSlice = createSlice({
     setActionStatus: (state, { payload }) => {
       state.actionStatusCode = payload
     },
+    setSearchRole: (state, { payload }) => {
+      state.searchRole = payload
+    },
   },
 });
 
-export const { setAllRole, setSingleRole,setRoleUpdate, setListPermission, setRole, setActionStatus } = RoleSlice.actions;
+export const { setAllRole, setSingleRole,setRoleUpdate, setListPermission, setRole, setActionStatus,setSearchRole } = RoleSlice.actions;
 
 export default RoleSlice.reducer;

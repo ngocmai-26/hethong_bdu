@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   faAlignLeft,
   faBookBookmark,
@@ -12,10 +12,18 @@ import { Link } from "react-router-dom";
 import Layout from "../layout";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllRole } from "../../../thunks/RoleThunk";
+import { setSearchJob } from "../../../slices/JobsSlice";
+import { getAllJob } from "../../../thunks/JobsThunk";
+import { priorities, statusList } from "../../../constants/fakedata";
+import { getAllUser } from "../../../thunks/UserThunk";
 
 function LayoutTask({ children }) {
-  const role = JSON.parse(localStorage.getItem('auth_role'))
+  const role = JSON.parse(localStorage.getItem("auth_role"));
   const { allRole } = useSelector((state) => state.roleReducer);
+  const { allJob, searchJobs } = useSelector((state) => state.jobsReducer);
+  const { allUser } = useSelector((state) => state.userReducer);
+  const [search, setSearch] = useState("");
+  const [filterStatus, setFilterStatus] = useState(0);
   const dispatch = useDispatch();
 
   const [isHiddenCreate, setIsHiddenCreate] = useState(true);
@@ -24,26 +32,51 @@ function LayoutTask({ children }) {
   };
   useLayoutEffect(() => {
     dispatch(getAllRole());
+    dispatch(getAllUser());
   }, []);
+
+  console.log(allUser)
+
+  useEffect(() => {
+    const listSearchJob = searchJobs.filter((item) =>
+      item.title.toLowerCase().includes(search.toLowerCase())
+    );
+    if (listSearchJob.length !== 0) {
+      dispatch(setSearchJob(listSearchJob));
+    }
+  }, [search]);
+
+  useLayoutEffect(() => {
+    if (allJob.length <= 0) {
+      dispatch(getAllJob());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (allJob.length > 0) {
+      dispatch(setSearchJob(allJob));
+    }
+  }, [allJob]);
 
   const [todo, setTodo] = useState("");
   const [target, setTarget] = useState(0);
   const [state, setState] = useState([]);
 
   //Thêm jobs
-  
-  const [title, setTitle] = useState("");
-  const [kpi, setKpi] = useState(0);
-  const [priority, setPriority] = useState(0);
-  const [status, setStatus] = useState(0);
-  const [isTask, setIsTask] = useState(true);
-  const [staff, setStaff] = useState("");
-  const [receiver, setReceiver] = useState("");
+
+  const [jobDetail, setJobDetail ] = useState({})
+  const [job, setJob] = useState({});
 
   const handleSubmit = () => {
     if (todo === "") {
       alert("Hãy nhập nội dung!");
     } else {
+        setJobDetail({
+          ...jobDetail,
+          note: todo,
+          target: target
+        })
+      
       setState([...state, { stt: state.length + 1, target, todo }]);
       setTodo("");
       setTarget(0);
@@ -71,7 +104,7 @@ function LayoutTask({ children }) {
                   to="/task-list"
                   className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
                 >
-                <FontAwesomeIcon icon={faListCheck} className="me-1" />
+                  <FontAwesomeIcon icon={faListCheck} className="me-1" />
                   Danh sách công việc
                 </Link>
               </li>
@@ -80,22 +113,23 @@ function LayoutTask({ children }) {
                   to="/task-board"
                   className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
                 >
-                <FontAwesomeIcon icon={faColumns} className="me-1" />
+                  <FontAwesomeIcon icon={faColumns} className="me-1" />
                   Bảng công việc
                 </Link>
               </li>
-              {role.id === 3? (
+              {role.id === 3 ? (
                 <li className="hover:bg-gray-50 mt-0 px-2">
-                <Link
-                  to="/quan-ly-bao-cao-cong-viec"
-                  className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
-                >
-                  <FontAwesomeIcon icon={faAlignLeft} className="me-1" />
-                  Báo cáo công việc
-                </Link>
-              </li>
-              ): (<></>)}
-              
+                  <Link
+                    to="/quan-ly-bao-cao-cong-viec"
+                    className="block py-1 text-sm font-medium leading-8 text-gray-500 w-full px-2 "
+                  >
+                    <FontAwesomeIcon icon={faAlignLeft} className="me-1" />
+                    Báo cáo công việc
+                  </Link>
+                </li>
+              ) : (
+                <></>
+              )}
             </ul>
             <form className="sm:pr-3 px-4 sm:px-0" action="#" method="GET">
               <label htmlFor="accounts-search" className="sr-only">
@@ -108,6 +142,8 @@ function LayoutTask({ children }) {
                   id="accounts-search"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
                   placeholder="Tìm kiếm"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
             </form>
@@ -127,22 +163,26 @@ function LayoutTask({ children }) {
             <div className="flex">
               <select
                 id="category-create"
+                onChange={(e) => setFilterStatus(e.target.value)}
                 className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
               >
                 <option selected="">Trạng thái</option>
-                <option defaultValue="1">Ưu tiên cao</option>
-                <option defaultValue="2">Ưu tiên trung bình</option>
-                <option defaultValue="3">Ưu tiên thấp</option>
+                {statusList.map((item, key) => (
+                  <option value={item.id} key={key}>
+                    {item.name}
+                  </option>
+                ))}
               </select>
               <select
                 id="category-create"
                 className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
               >
                 <option selected="">Mức độ</option>
-                <option defaultValue="FL">Cần gấp</option>
-                <option defaultValue="RE">Quan trọng</option>
-                <option defaultValue="AN">Bình thường</option>
-                <option defaultValue="VU">Ưu tiên sau</option>
+                {priorities.map((item, key) => (
+                  <option value={item.id} key={key}>
+                    {item.name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -194,7 +234,12 @@ function LayoutTask({ children }) {
                             </label>
                             <select
                               id="category-create"
-                              onChange={(e) => setState(e.target.value)}
+                              onChange={(e) =>
+                                setJob({
+                                  ...job,
+                                  status: +e.target.value,
+                                })
+                              }
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                             >
                               <option selected=""></option>
@@ -202,7 +247,6 @@ function LayoutTask({ children }) {
                               <option value="2">Đang tiến hành</option>
                               <option value="3">Đến hạn</option>
                               <option value="4">Hoàn thành</option>
-                              
                             </select>
                           </div>
                           <div className="col-span-2">
@@ -216,16 +260,29 @@ function LayoutTask({ children }) {
                               <input
                                 type="date"
                                 name=""
-                                defaultValue=""
-                                id="title"
+                                value={jobDetail?.timeStart}
+                                onChange={(e) =>
+                                  setJobDetail({
+                                    ...jobDetail,
+                                    timeStart: e.target.value,
+                                  })
+                                }
+                                id="timeStart"
                                 className="shadow-sm bg-gray-50  border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                                 required
                               />
                               <input
                                 type="date"
                                 name=""
-                                defaultValue=""
-                                id="title"
+                                value={jobDetail?.timeEnd}
+                                onChange={(e) =>
+                                  setJobDetail({
+                                    ...jobDetail,
+                                    timeEnd: e.target.value,
+                                  })
+                                }
+                               
+                                id="timeEnd"
                                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                                 required
                               />
@@ -237,8 +294,13 @@ function LayoutTask({ children }) {
                         <input
                           type="text"
                           name="title"
-                          onChange={(e) => setTitle(e.target.value)}
-                          defaultValue=""
+                          value={job?.title}
+                          onChange={(e) =>
+                            setJob({
+                              ...job,
+                              title: e.target.value,
+                            })
+                          }
                           id="title"
                           className="shadow-sm me-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
                           placeholder="Tên công việc"
@@ -246,11 +308,17 @@ function LayoutTask({ children }) {
                         />
                         <select
                           id="category-create"
-                          onChange={(e)=>setPriority(+e.target.value)}
+                          value={job?.priority}
+                          onChange={(e) =>
+                            setJob({
+                              ...job,
+                              priority: +e.target.value,
+                            })
+                          }
                           className="mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                         >
                           <option selected="">Mức độ</option>
-                          <option value="1" >Cần gấp</option>
+                          <option value="1">Cần gấp</option>
                           <option value="2">Quan trọng</option>
                           <option value="3">Bình thường</option>
                           <option value="4">Ưu tiên sau</option>
@@ -356,25 +424,27 @@ function LayoutTask({ children }) {
                       </form>
                       <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                         <div className="h-auto ">
-                          {allRole.filter((item) => item.roleName !== "ADMIN" && item.roleName !== "MANAGER" ? (
-                            <div className="users-item flex py-1 px-2 ">
-                            <div className="avatar w-2/12 ">
-                              <img
-                                src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                alt=""
-                                className=" w-8 h-8  rounded-full"
-                              />
-                            </div>
-                            <div className="name w-8/12 my-auto">
-                              <span className="text-xs ">
-                                Nguyễn Thị Ngọc Mai
-                              </span>
-                            </div>
-                          </div>
-                          ): (
-                            <></>
-                          ))}
-                          
+                          {allRole.filter((item) =>
+                            item.roleName !== "ADMIN" &&
+                            item.roleName !== "MANAGER" ? (
+                              <div className="users-item flex py-1 px-2 ">
+                                <div className="avatar w-2/12 ">
+                                  <img
+                                    src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
+                                    alt=""
+                                    className=" w-8 h-8  rounded-full"
+                                  />
+                                </div>
+                                <div className="name w-8/12 my-auto">
+                                  <span className="text-xs ">
+                                    Nguyễn Thị Ngọc Mai
+                                  </span>
+                                </div>
+                              </div>
+                            ) : (
+                              <></>
+                            )
+                          )}
                         </div>
                       </div>
                       <span className="text-xs font-medium">
@@ -405,6 +475,13 @@ function LayoutTask({ children }) {
                             type="text"
                             name="file"
                             id="top-bar-search"
+                            value={jobDetail?.verifyLink}
+                            onChange={(e) =>
+                              setJobDetail({
+                                ...jobDetail,
+                                verifyLink: e.target.value,
+                              })
+                            }
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
                           />
                         </div>

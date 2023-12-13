@@ -27,6 +27,9 @@ import { useLayoutEffect } from "react";
 import JobManager from "../container/user/tasks/jobmanager.jsx";
 import RolesDetail from "../container/admin/roles/roles-detail.jsx";
 import KPICateDetail from "../container/admin/kpicategory/kpi-cate-detail.jsx";
+import ConfirmPassword from "../container/auth/confirm_password.jsx";
+import KPIManager from "../container/admin/kpimanager/index.jsx";
+import KPIManagerDetail from "../container/admin/kpimanager/kpi-manager-detail.jsx";
 
   
 export const GeneralRoute = () => {
@@ -36,6 +39,7 @@ export const GeneralRoute = () => {
       <Route path="/login" element={<Login />}></Route>
       <Route path="/forgot-password" element={<ForgotPassword />}></Route>
       <Route path="/category-target" element={<CategoryTarget />}></Route>
+      <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
       <Route path="*" element={<Login />} />
     </Routes>
   );
@@ -54,7 +58,7 @@ export const LoggedRoute = () => {
       <Route path="/danh-sach-kpi" element={<ListKPI />}></Route>
       <Route path="/task-list" element={<TaskList />}></Route>
       <Route path="/task-board" element={<TaskBoard />}></Route>
-      <Route path="/manager-account" element={<AccountManager />}></Route>
+      <Route path="/account" element={<AccountManager />}></Route>
       <Route path="/request-kpi" element={<RequestKPI />}></Route>
       <Route path="/note-list" element={<ListNote />}></Route>
       <Route path="/jobs/:id" element={<DetailTask />}></Route>
@@ -64,6 +68,8 @@ export const LoggedRoute = () => {
       <Route path="/expertise" element={<Expertise />}></Route>
       <Route path="/permissions" element={<Category />}></Route>
       <Route path="/kpi_categories" element={<CategoryKPI />}></Route>
+      <Route path="/kpi_manager" element={<KPIManager />}></Route>
+      <Route path="/kpis/:id" element={<KPIManagerDetail />}></Route>
       <Route path="/kpi_categories_detail/:id" element={<KPICateDetail />}></Route>
       <Route path="/category-role" element={<CategoryTarget />}></Route>
       <Route path="/quan-ly-bao-cao-cong-viec" element={<JobManager />}></Route>
@@ -73,11 +79,12 @@ export const LoggedRoute = () => {
 };
 function Router() {
   const { logged } = useSelector((state) => state.authReducer);
+  
 
   useLayoutEffect(() => {}, [logged]);
   return (
     <BrowserRouter>
-      {!logged ? <GeneralRoute /> : <LoggedRoute />}
+      {!logged  ? <GeneralRoute /> : <LoggedRoute />}
       {/* <LoggedRoute /> */}
     </BrowserRouter>
   );

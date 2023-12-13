@@ -5,9 +5,10 @@ import validator from "validator";
 import { register } from "../../../thunks/AuthThunk";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllRole } from "../../../thunks/RoleThunk";
-import { addUser } from "../../../thunks/UserThunk";
+import { addUser, getAllUser } from "../../../thunks/UserThunk";
 import { setActionStatus } from "../../../slices/AuthSlice";
 import styled from "styled-components";
+import { setSearchUser } from "../../../slices/UserSlide";
 const ErrorText = styled.div`
   color: red;
   text-align: start;
@@ -24,10 +25,12 @@ function AccountManager() {
   const [phone, setPhone] = useState("");
   const [roleName, setRoleName] = useState("");
   const [managerId, setManagerId] = useState("");
+  const [search, setSearch] = useState("");
 
   
   const { allRole } = useSelector((state) => state.roleReducer);
   const { actionStatusCode } = useSelector((state) => state.authReducer);
+  const { allUser, searchUser } = useSelector((state) => state.userReducer);
 
   const dispatch = useDispatch();
   const initError = {
@@ -45,6 +48,25 @@ function AccountManager() {
   useLayoutEffect(() => {
     dispatch(getAllRole());
   }, []);
+
+  
+  useEffect(() => {
+    const listSearchUser = searchUser?.filter((item) => item?.user.fullName.toLowerCase().includes(search.toLowerCase()))
+    if (listSearchUser?.length !==0) {
+      dispatch(setSearchUser(listSearchUser));
+    }
+  }, [search])
+  
+  useEffect(() => {
+    if (allUser.length <= 0) {
+      dispatch(getAllUser());
+    }else {
+      dispatch(setSearchUser(allUser)); 
+    }
+  }, [allUser, dispatch])
+  console.log(searchUser)
+
+
   const handleHiddenDelete = () => {
     setIsHiddenDelete(!isHiddenDelete);
   };
@@ -132,6 +154,7 @@ function AccountManager() {
     
   };
 
+
   useEffect(() => {
     if (actionStatusCode === 200) {
       setIsHiddenCreate(true);
@@ -208,6 +231,7 @@ function AccountManager() {
                     id="accounts-search"
                     className="bg-gray-50 border border-gray-300  my-auto text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                     placeholder="Tìm kiếm tài khoản"
+                    onChange={(e)=>setSearch(e.target.value)}
                   />
                 </div>
               </form>
@@ -264,12 +288,6 @@ function AccountManager() {
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
                     >
-                      Avatar
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
-                    >
                       Tên đăng nhập
                     </th>
                     <th
@@ -282,18 +300,13 @@ function AccountManager() {
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
                     >
-                      Thời gian tạo
-                    </th>
-                    <th
-                      scope="col"
-                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
-                    >
                       Hành động
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  <tr className="hover:bg-gray-100">
+                  {searchUser?.map((item, key) => (
+                    <tr className="hover:bg-gray-100" key={key}>
                     <td className="w-4 p-4">
                       <div className="flex items-center">
                         <input
@@ -309,27 +322,18 @@ function AccountManager() {
                     </td>
                     <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
                       <div className="text-base font-semibold text-gray-900">
-                        1
+                        {key + 1}
                       </div>
                     </td>
                     <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                      technology
+                      {item.user.fullName}
                     </td>
-                    <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs">
-                      <img
-                        src="https://www.studytienganh.vn/upload/2022/05/112272.jpg"
-                        alt=""
-                        width="100px"
-                      />
+                    
+                    <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                    {item.user.email}
                     </td>
                     <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                      maibaby
-                    </td>
-                    <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                      maibaby@gmail.com
-                    </td>
-                    <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                      17:55:00
+                    {item.user.phone}
                     </td>
 
                     <td className="p-4 space-x-2 whitespace-nowrap">
@@ -384,6 +388,8 @@ function AccountManager() {
                       </button>
                     </td>
                   </tr>
+                  ))}
+                  
                 </tbody>
               </table>
             </div>
@@ -816,9 +822,9 @@ function AccountManager() {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                     >
                       <option selected=""></option>
-                      {allRole.map((item) => {
+                      {allRole.map((item, key) => {
                         return (
-                          <option value={item.roleName} id={item.id}>{item.roleName}</option>
+                          <option value={item.roleName} id={item.id} key={key}>{item.roleName}</option>
                         )
                       })}
                       

@@ -1,14 +1,16 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 import LayoutAdmin from "../layout";
 import { useDispatch, useSelector } from "react-redux";
 import {  getAllPermissions } from "../../../thunks/PermissionsThunk";
+import { setSearchPermissions } from "../../../slices/PermissionsSlice";
 
 function Category() {
   const [isHiddenDelete, setIsHiddenDelete] = useState(true);
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(true);
   const [isHiddenCreate, setIsHiddenCreate] = useState(true);
-  const { allPermission } = useSelector((state) => state.permissionsReducer);
+  const [search, setSearch] = useState("");
+  const { allPermission, searchPermission } = useSelector((state) => state.permissionsReducer);
   const dispatch = useDispatch();
   const handleHiddenDelete = () => {
     setIsHiddenDelete(!isHiddenDelete);
@@ -19,13 +21,23 @@ function Category() {
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
   };
-  useLayoutEffect(() => {
+
+  useEffect(() => {
+    const listSearchPermissions = searchPermission?.filter((item) => item?.permissionName?.toLowerCase().includes(search.toLowerCase()))
+    if (listSearchPermissions?.length !==0) {
+      dispatch(setSearchPermissions(listSearchPermissions));
+    }
+  }, [search])
+  
+  useEffect(() => {
     if (allPermission.length <= 0) {
       dispatch(getAllPermissions());
+    }else {
+      dispatch(setSearchPermissions(allPermission?.response)); 
     }
-  }, []);
+  }, [allPermission, dispatch])
 
-  console.log(allPermission)
+
   return (
     <LayoutAdmin>
       <div className="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 ">
@@ -88,8 +100,10 @@ function Category() {
                     type="text"
                     name="email"
                     id="accounts-search"
+                    value={search}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                    placeholder="Tìm kiếm tài khoản"
+                    placeholder="Tìm kiếm chức năng"
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </form>
@@ -157,9 +171,9 @@ function Category() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                {allPermission?.response?.map((item) => {
+                {searchPermission?.map((item, key) => {
                       return (
-                        <tr className="hover:bg-gray-100">
+                        <tr className="hover:bg-gray-100" key={key}>
                     
                     <td className="w-4 p-4">
                       <div className="flex items-center">

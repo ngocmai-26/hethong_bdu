@@ -9,6 +9,7 @@ const initState = {
     kpiCategories: [],
     kpiCategoriesUpdate: {},
   },
+  searchKpiCategories: [],
 }
 const KPICategoriesSlice = createSlice({
   name: 'kpi_categories',
@@ -29,6 +30,9 @@ const KPICategoriesSlice = createSlice({
     setSingleKPICategories: (state, { payload }) => {
       state.singleKpiCategories = payload;
     },
+    setSearchKPICategories: (state, { payload }) => {
+      state.searchKpiCategories = payload;
+    },
   },
 })
 
@@ -38,6 +42,7 @@ export const {
   setActionStatus,
   setRoleUpdate,
   setSingleKPICategories,
+  setSearchKPICategories
 } = KPICategoriesSlice.actions
 
 export default KPICategoriesSlice.reducer

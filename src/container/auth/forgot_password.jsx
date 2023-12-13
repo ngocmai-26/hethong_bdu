@@ -1,9 +1,32 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { forgotPassword } from "../../thunks/AuthThunk";
+import { setAlert } from "../../slices/AlertSlice";
+import { useNavigate } from "react-router-dom";
+import { setEmailAuth } from "../../slices/AuthSlice";
 
 function ForgotPassword() {
   const [hiddenToast, setHiddenToast] = useState(true);
   const handleCloseToast = () => {
     setHiddenToast(!hiddenToast);
+  };
+  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+  const handleForgot = () => {
+    if (email.length <= 0) {
+      dispatch(
+        setAlert({ type: "error", content: "notify_valid_email" })
+      );
+      return;
+    }
+    dispatch(forgotPassword(email)).then((resp) => {
+      if (!resp?.error) {
+        nav("/confirm-password");
+      }
+      
+    dispatch(setEmailAuth(email))
+    });
   };
   return (
     <article className="bg-cyan-50 h-screen w-full my-auto flex items-center ">
@@ -68,9 +91,11 @@ function ForgotPassword() {
               id="email"
               className="rounded-md w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
               placeholder="Email address"
+              onChange={(e) => setEmail(e.target.value)}
             />
             <button
-              type="submit"
+              type="button"
+              onClick={handleForgot}
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2 "
             >
               Gửi

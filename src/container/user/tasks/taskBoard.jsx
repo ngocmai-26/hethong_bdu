@@ -3,9 +3,10 @@ import LayoutTask from ".";
 import { getAllJob } from "../../../thunks/JobsThunk";
 import { useLayoutEffect } from "react";
 import { status } from "../../../constants/fakedata";
+import { Link } from "react-router-dom";
 
 function TaskBoard() {
-  const { allJob } = useSelector((state) => state.jobsReducer);
+  const { allJob, searchJobs } = useSelector((state) => state.jobsReducer);
   const dispatch = useDispatch();
   useLayoutEffect(() => {
     if (allJob.length <= 0) {
@@ -27,9 +28,9 @@ function TaskBoard() {
                       <p className="text-black text-xs">{allJob.filter(item => item.status === 1).length} công việc</p>
                     </div>
                     <div className="plan-content px-2">
-                      {allJob.map((item) => item.status === 1? (
-                        <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2">
-                        <a href="">
+                      {searchJobs.map((item, key) => item.status === 1? (
+                        <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2" key={key}>
+                        <Link to={`/jobs/${item.id}`}>
                           <p className="text-xs font-semibold">
                             {item.title}
                           </p>
@@ -45,7 +46,7 @@ function TaskBoard() {
                             </span>
                             <span className="text-xs">10-17</span>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                       ): (<></>))
 
@@ -58,9 +59,9 @@ function TaskBoard() {
                       <p className="text-black text-xs">{allJob.filter(item => item.status === 2).length} công việc</p>
                     </div>
                     <div className="plan-content px-2">
-                    {allJob.map((item) => item.status === 2? (
-                        <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2">
-                        <a href="">
+                    {searchJobs.map((item, key) => item.status === 2? (
+                        <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2" key={key}>
+                        <Link to={`/jobs/${item.id}`}>
                           <p className="text-xs font-semibold">
                             {item.title}
                           </p>
@@ -76,7 +77,7 @@ function TaskBoard() {
                             </span>
                             <span className="text-xs">10-17</span>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                       ): (<></>))
 
@@ -89,9 +90,9 @@ function TaskBoard() {
                       <p className="text-black text-xs">{allJob.filter(item => item.status === 3).length} công việc</p>
                     </div>
                     <div className="plan-content px-2">
-                    {allJob.map((item) => item.status === 3? (
-                        <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2">
-                        <a href="">
+                    {searchJobs.map((item, key) => item.status === 3? (
+                        <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2" key={key}>
+                        <Link to={`/jobs/${item.id}`}>
                           <p className="text-xs font-semibold">
                             {item.title}
                           </p>
@@ -107,7 +108,7 @@ function TaskBoard() {
                             </span>
                             <span className="text-xs">10-17</span>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                       ): (<></>))
 
@@ -120,9 +121,9 @@ function TaskBoard() {
                       <p className="text-black text-xs">{allJob.filter(item => item.status === 4).length} công việc</p>
                     </div>
                     <div className="plan-content px-2">
-                    {allJob.map((item) => item.status === 4? (
-                        <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2">
-                        <a href="">
+                    {searchJobs.map((item, key) => item.status === 4? (
+                        <div className="plan-item bg-white m-2 px-2 py-4 rounded-sm shadow hover:bg-gray-50 hover:cursor-pointer my-2" key={key}>
+                        <Link to={`/jobs/${item.id}`}>
                           <p className="text-xs font-semibold">
                             {item.title}
                           </p>
@@ -138,7 +139,7 @@ function TaskBoard() {
                             </span>
                             <span className="text-xs">10-17</span>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                       ): (<></>))
 

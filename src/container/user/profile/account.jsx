@@ -1,11 +1,41 @@
 import { useState } from "react";
 import Profile from ".";
+import { useDispatch } from "react-redux";
+import { setAlert } from "../../../slices/AlertSlice";
+import { changePassword } from "../../../thunks/AuthThunk";
 
 function Account() {
   const info = JSON.parse(localStorage.getItem('auth_info'))
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [userName, setUserName] = useState("");
   const [hiddenChangePassword, setHiddenChangePassword] = useState(true);
-  const handleChangePassword = () => {
+  const handleHiddenChangePassword = () => {
     setHiddenChangePassword(!hiddenChangePassword);
+  };
+  const dispatch = useDispatch();
+  const handleChangePassword = () => {
+    if (window.confirm("notify_agree_change_password")) {
+      if (oldPassword.length <= 0) {
+        dispatch(
+          setAlert({
+            type: "error",
+            content: "notify_valid_old_password",
+          })
+        );
+        return;
+      }
+      if (newPassword.length <= 0) {
+        dispatch(
+          setAlert({
+            type: "error",
+            content: "notify_valid_new_password",
+          })
+        );
+        return;
+      }
+      dispatch(changePassword({ userName, oldPassword, newPassword }));
+    }
   };
   return (
     <>
@@ -68,7 +98,7 @@ function Account() {
                     <button
                       type="button"
                       className="text-red-500 text-xs hover:text-red-700"
-                      onClick={() => handleChangePassword()}
+                      onClick={() => handleHiddenChangePassword()}
                     >
                       Thay đổi mật khẩu
                     </button>
@@ -161,7 +191,7 @@ function Account() {
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center "
                 data-modal-toggle="delete-user-modal"
-                onClick={() => handleChangePassword()}
+                onClick={() => handleHiddenChangePassword()}
               >
                 <svg
                   className="w-5 h-5"
@@ -205,6 +235,19 @@ function Account() {
               </div>
               <form action="" className="py-0  ">
                 <div className="border-b-2 py-3">
+                <div className="currentPassword grid grid-cols-3 gap-5 py-2">
+                    <label htmlFor="" className="text-sm my-auto">
+                      Tên đăng nhập:
+                    </label>
+                    <div className="col-span-2">
+                      <input
+                        type="text"
+                        onChange={(e) => setUserName(e.target.value)}
+                        id="currentPassword"
+                        className="rounded-sm w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
+                      />
+                    </div>
+                  </div>
                   <div className="currentPassword grid grid-cols-3 gap-5 py-2">
                     <label htmlFor="" className="text-sm my-auto">
                       Mật khẩu hiện tại:
@@ -213,6 +256,7 @@ function Account() {
                       <input
                         type="password"
                         id="currentPassword"
+                        onChange={(e) => setOldPassword(e.target.value)}
                         className="rounded-sm w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
                       />
                     </div>
@@ -226,11 +270,12 @@ function Account() {
                       <input
                         type="password"
                         id="newPassword"
+                        onChange={(e) => setNewPassword(e.target.value)}
                         className="rounded-sm w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
                       />
                     </div>
                   </div>
-                  <div className="repeatPassword grid grid-cols-3 gap-5 py-2">
+                  {/* <div className="repeatPassword grid grid-cols-3 gap-5 py-2">
                     <label htmlFor="" className="text-sm my-auto">
                       Nhập lại mật khẩu mới:
                     </label>
@@ -241,11 +286,12 @@ function Account() {
                         className="rounded-sm w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="button text-right pt-5">
                   <button
                     type="button"
+                    onClick={handleChangePassword}
                     className="bg-blue-500 text-white py-1.5 px-3.5 rounded-md text-sm "
                   >
                     Lưu

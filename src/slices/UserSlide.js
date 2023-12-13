@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initState = {
   users: [],
   search: [],
+  allUser: [],
   refresh: false,
+  searchUser: [],
 };
 const UserSlice = createSlice({
   name: "users",
@@ -12,12 +14,15 @@ const UserSlice = createSlice({
     setUsers: (state, { payload }) => {
       state.users = payload;
     },
-    setSearch: (state, { payload }) => {
-      state.search = payload;
+    setAllUser: (state, { payload }) => {
+      state.allUser = payload;
+    },
+    setSearchUser: (state, { payload }) => {
+      state.searchUser = payload;
     },
   },
 });
 
-export const { setUsers ,setSearch} = UserSlice.actions;
+export const { setUsers ,setSearchUser, setAllUser} = UserSlice.actions;
 
 export default UserSlice.reducer;

@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { setAlert } from "../../../slices/AlertSlice";
 import { getAllPermissions } from "../../../thunks/PermissionsThunk";
-import { setActionStatus } from "../../../slices/RoleSlice";
+import { setActionStatus, setSearchRole } from "../../../slices/RoleSlice";
 
 function CategoryTarget() {
 
@@ -23,6 +23,7 @@ function CategoryTarget() {
   const [taskList, setTaskList] = useState([]);
   const [role, setRole] = useState({});
   const [perUpdate, setPerUpdate] = useState({});
+  const [search, setSearch] = useState("");
   
   //update
   const [updateRoleName, setUpdateRoleName] = useState("");
@@ -32,7 +33,7 @@ function CategoryTarget() {
   const [newRoleName, setNewRoleName] = useState("");
   const [newRoleDes, setNewRoleDes] = useState("");
 
-  const { allRole, actionStatusCode } = useSelector((state) => state.roleReducer);
+  const { allRole, actionStatusCode, searchRole } = useSelector((state) => state.roleReducer);
   const { allPermission } = useSelector((state) => state.permissionsReducer);
   
   const dispatch = useDispatch();
@@ -82,15 +83,27 @@ function CategoryTarget() {
     }
     setPerUpdate(item);
   };
+  useEffect(() => {
+    const listSearchRole = allRole?.filter((item) => item?.roleName?.toLowerCase().includes(search.toLowerCase()))
+    if (listSearchRole?.length !==0) {
+      dispatch(setSearchRole(listSearchRole));
+    }
+  }, [search])
 
   useLayoutEffect(() => {
-    if (allRole.length <= 0) {
-      dispatch(getAllRole());
-    }
     if (allPermission.length <= 0) {
       dispatch(getAllPermissions());
     }
   }, []);
+
+  useEffect(() => {
+    if (allRole?.length <= 0) {
+      dispatch(getAllRole());
+    }else {
+      dispatch(setSearchRole(allRole)); 
+    }
+  }, [allRole, dispatch])
+
 
   useLayoutEffect(() => {
     setUpdateRoleDes(roleDetail?.description);
@@ -189,7 +202,9 @@ function CategoryTarget() {
                     name="email"
                     id="accounts-search"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                    placeholder="Tìm kiếm tài khoản"
+                    placeholder="Tìm kiếm chức vụ"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </form>
@@ -252,7 +267,7 @@ function CategoryTarget() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {allRole?.map((item, index) => {
+                  {searchRole?.map((item, index) => {
                     return (
                       <tr className="hover:bg-gray-100" key={index}>
                         <td className="w-4 p-4">
@@ -513,8 +528,8 @@ function CategoryTarget() {
                         </span>
                         <div className="border-2 h-40 overflow-y-auto overflow-hidden">
                           <ul>
-                            {allPermission?.response?.map((item) => (
-                              <li className="hover:bg-gray-100">
+                            {allPermission?.response?.map((item, key) => (
+                              <li className="hover:bg-gray-100" key={key}>
                                 <button
                                   className="w-full text-start text-xs p-1"
                                   onClick={() => handleAddTaskList(item.id)}
@@ -531,10 +546,10 @@ function CategoryTarget() {
                         <span className="text-xs font-medium">Quyền hạn</span>
                         <div className="border-2 h-40 overflow-y-auto overflow-hidden">
                           <ul>
-                            {allPermission?.response?.map((pre) =>
+                            {allPermission?.response?.map((pre, key) =>
                               taskList?.map((item) =>
                                 pre.id === item ? (
-                                  <li className="text-xs p-1 flex justify-between">
+                                  <li className="text-xs p-1 flex justify-between" key={key}>
                                     {pre.permissionName}
                                   </li>
                                 ) : (

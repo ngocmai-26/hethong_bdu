@@ -1,15 +1,16 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import LayoutTask from ".";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllJob } from "../../../thunks/JobsThunk";
-import { priorities, status } from "../../../constants/fakedata";
+import { getAllJob, updateJob } from "../../../thunks/JobsThunk";
+import { priorities, statusList } from "../../../constants/fakedata";
+import { setSearchJob } from "../../../slices/JobsSlice";
 
 
 function TaskList() {
-  const { allJob } = useSelector((state) => state.jobsReducer);
+  const { allJob, searchJobs } = useSelector((state) => state.jobsReducer);
 
   const [isAccept, setIsAccept] = useState(false);
   const [isRefuse, setIsRefuse] = useState(false);
@@ -18,9 +19,11 @@ function TaskList() {
   const [target, setTarget] = useState(0);
   const [state, setState] = useState([]);
   const [isLink, setIsLink] = useState("");
+  const [statusChange, setStatusChange] = useState({});
   const dispatch = useDispatch();
 
-  const handleAccept = ({ item }) => {
+  const handleAccept = (item) => {
+    setStatusChange(item)
     setIsAccept(!isAccept);
   };
   const handleRefuse = ({ item }) => {
@@ -34,6 +37,11 @@ function TaskList() {
   }, []);
 
   const handleSendAccept = () => {
+    const updatedStatus = { ...statusChange };
+    updatedStatus.status = 2
+    setStatusChange(updatedStatus)
+    // dispatch(updateJob(statusChange))
+    console.log(statusChange)
     setIsAccept(false);
     setIsRefuse(false);
   };
@@ -55,7 +63,6 @@ function TaskList() {
     setState(list);
   };
 
-  console.log(allJob);
   return (
     <LayoutTask>
       <div className="flex flex-col">
@@ -121,9 +128,9 @@ function TaskList() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {allJob.map((item) => {
+                  {searchJobs.map((item, key) => {
                     return (
-                      <tr className="">
+                      <tr className="" key={key}>
                         <td className="w-4 p-4">
                           <div className="flex items-center">
                             <input
@@ -142,10 +149,11 @@ function TaskList() {
                         </td>
                         <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
                           <div className="text-xs font-medium text-gray-900">
-                            {status.map((pre) =>
+                            {statusList.map((pre, key) =>
                               pre.id === item.status ? (
                                 <span
                                   className={`${pre.bg_color} text-center rounded-sm text-white py-1 px-3 cursor-pointer`}
+                                  key={key}
                                 >
                                   <span>{pre.name}</span>
                                 </span>
@@ -158,11 +166,12 @@ function TaskList() {
                           </div>
                         </td>
                         <td className="p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                          {priorities.map((pre) =>
+                          {priorities.map((pre, key) =>
                             pre.id === item.priority ? (
                               <FontAwesomeIcon
                                 icon={faCheck}
                                 className={`${pre.color} font-bold text-base`}
+                                key={key}
                               />
                             ) : (
                               <></>
@@ -187,14 +196,9 @@ function TaskList() {
                         </td>
                         <td className="w-fit p-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                           {item.status === 1 ? (
-                            <>
-                              <button className="bg-blue-500 text-white text-xs p-1 mr-2">
-                                Nhận việc
-                              </button>
-                              <button className="bg-blue-500 text-white text-xs p-1">
-                                Từ chối
-                              </button>
-                            </>
+                            <button className="bg-blue-500 text-white text-xs p-1 mr-2" onClick={() => handleAccept(item)}>
+                            Xác nhận
+                          </button>
                           ) : (
                             <button
                               className="bg-blue-500 text-white text-xs p-1"
@@ -272,7 +276,7 @@ function TaskList() {
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center "
                 data-modal-toggle="delete-user-modal"
-                onClick={(item) => handleAccept(item)}
+                onClick={handleAccept}
               >
                 <svg
                   className="w-5 h-5"

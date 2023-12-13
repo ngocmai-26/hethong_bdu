@@ -6,6 +6,7 @@ const initState = {
   user: {},
   refresh: false,
   actionStatusCode: 0,
+  email:'',
 }
 const AuthSlice = createSlice({
   name: 'auth',
@@ -28,10 +29,13 @@ const AuthSlice = createSlice({
     setRefresh: (state, { payload }) => {
       state.refresh = payload
     },
+    setEmailAuth: (state, { payload }) => {
+      state.email = payload
+    },
     loadUser: (state) => {
       const token = localStorage.getItem('auth_token')
       const user = localStorage.getItem('auth_info')
-      if (user && token) {
+      if (user && token ) {
         state.user = JSON.parse(user)
         state.authToken = token
         state.logged = true
@@ -56,6 +60,7 @@ export const {
   setRefresh,
   setActionStatus,
   setUser,
+  setEmailAuth
 } = AuthSlice.actions
 
 export default AuthSlice.reducer

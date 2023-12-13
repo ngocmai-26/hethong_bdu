@@ -6,7 +6,7 @@ import { deleteJob, getJobById } from "../../../thunks/JobsThunk";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLayoutEffect } from "react";
-import { priorities, status } from "../../../constants/fakedata";
+import { priorities, statusList } from "../../../constants/fakedata";
 
 function DetailTask() {
   const { id } = useParams();
@@ -41,7 +41,7 @@ function DetailTask() {
                         >
                           Trạng thái công việc
                         </label>
-                        {status.map((item)=> item?.id === singleJob?.response?.status? <span className={`text-xs font-bold ${item.color}`}>{item.name}</span>: <></>)}
+                        {statusList.map((item, key)=> item?.id === singleJob?.response?.status? <span className={`text-xs font-bold ${item.color}`} key={key}>{item.name}</span>: <></>)}
                         
                       </div>
                       <div className="col-span-3">

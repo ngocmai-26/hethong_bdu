@@ -14,78 +14,120 @@ import {
   setSearchKPICategories,
 } from "../../../slices/KPICategoriesSlice";
 import { Link } from "react-router-dom";
+import { setSearchKPIManager } from "../../../slices/KPIManagerSlice";
+import { addNewKPIManager, deleteKPIManager, getAllKPIManager, updateKPIManager } from "../../../thunks/KPIManagerThunk";
+import { getAllJob } from "../../../thunks/JobsThunk";
 
-function CategoryKPI() {
+function KPIManager() {
   const [isHiddenUpdate, setIsHiddenUpdate] = useState(true);
   const [isHiddenCreate, setIsHiddenCreate] = useState(true);
   const [search, setSearch] = useState("");
   //Update
-  const [kpiCategoriesDetail, setKpiCategoriesDetail] = useState({});
-  const [kpiCate, setKpiCate] = useState({});
-  const [updateKpiCategoriesName, setUpdateKpiCategoriesName] = useState("");
-  const [updateKpiCategoriesDes, setUpdateKpiCategoriesDes] = useState("");
+  const [kpiManagerDetail, setKpiManagerDetail] = useState({});
+  const [kpiManager, setKpiManager] = useState({});
 
-  const { allKpiCategories, searchKpiCategories } = useSelector(
+  
+  const [updateKpiManagerName, setUpdateKpiManagerName] = useState("");
+  const [updateKpiManagerDes, setUpdateKpiManagerDes] = useState("");
+  const [updateKpiManagerTarget, setUpdateKpiManagerTarget] = useState(0);
+  const [updateKpiManagerTypeId, setUpdateKpiManagerTypeId] = useState(0);
+  const [updateKpiManagerJobId, setUpdateKpiManagerJobId] = useState("");
+
+
+  //Lấy từ dispatch
+  const { allKpiCategories } = useSelector(
     (state) => state.kpiCategoriesReducer
   );
-  const { actionStatusCode } = useSelector(
-    (state) => state.kpiCategoriesReducer
+  const { allKpiManager, searchKpiManager,actionStatusCode } = useSelector(
+    (state) => state.kpiManagerReducer
   );
+  const { allJob } = useSelector((state) => state.jobsReducer);
 
-  const [kpiCategoriesName, setKpiCategoriesName] = useState("");
-  const [kpiCategoriesDes, setKpiCategoriesDes] = useState("");
+  //Các trường tạo dữ liệu
+  const [kpiManagerName, setKpiManagerName] = useState("");
+  const [kpiManagerDes, setKpiManagerDes] = useState("");
+  const [kpiManagerTarget, setKpiManagerTarget] = useState(0);
+  const [kpiManagerTypeId, setKpiManagerTypeId] = useState(0);
+  const [kpiManagerJobId, setKpiManagerJobId] = useState("");
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setKpiCate(kpiCategoriesDetail);
-  }, [kpiCategoriesDetail]);
+    setKpiManager(kpiManagerDetail);
+  }, [kpiManagerDetail]);
 
   const handleHiddenUpdate = (item) => {
     setIsHiddenUpdate(!isHiddenUpdate);
-    setKpiCategoriesDetail(item);
+    setKpiManagerDetail(item);
   };
+  
+  console.log("item",kpiManagerDetail)
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
   };
+
+  //Tìm kiếm kpi
   useEffect(() => {
-    const listSearchKpiCategories = searchKpiCategories?.filter((item) =>
-      item?.name?.toLowerCase().includes(search.toLowerCase())
+    const listSearchKpiManager = searchKpiManager?.filter((item) =>
+      item?.kpiName?.toLowerCase().includes(search.toLowerCase())
     );
-    if (listSearchKpiCategories?.length !== 0) {
-      dispatch(setSearchKPICategories(listSearchKpiCategories));
+    if (listSearchKpiManager?.length !== 0) {
+      dispatch(setSearchKPIManager(listSearchKpiManager));
     }
   }, [search]);
-  console.log(setSearchKPICategories);
 
-  useEffect(() => {
+
+  //lấy ra danh mục kpi
+  useLayoutEffect(() => {
     if (allKpiCategories.length <= 0) {
       dispatch(getAllKPICategories());
-    } else {
-      dispatch(setSearchKPICategories(allKpiCategories));
-    }
-  }, [allKpiCategories, dispatch]);
+    } 
+    if (allJob.length <= 0) {
+      dispatch(getAllJob());
+    } 
+  }, []);
+
+  //lấy ra các kpi
+  useEffect(() => {
+    if (allKpiManager.length <= 0) {
+      dispatch(getAllKPIManager());
+    }else {
+        dispatch(setSearchKPIManager(allKpiManager));
+      }
+  }, [allKpiManager, dispatch]);
 
   useLayoutEffect(() => {
-    setUpdateKpiCategoriesName(kpiCategoriesDetail?.name);
-    setUpdateKpiCategoriesDes(kpiCategoriesDetail?.description);
-  }, [kpiCategoriesDetail]);
+    setUpdateKpiManagerName(kpiManagerDetail?.kpiName);
+    setUpdateKpiManagerDes(kpiManagerDetail?.description);
+    setUpdateKpiManagerTypeId(kpiManagerDetail?.kpiCategory?.id);
+    setUpdateKpiManagerJobId(kpiManagerDetail?.job?.id);
+    setUpdateKpiManagerTarget(kpiManagerDetail?.target);
+  }, [kpiManagerDetail]);
 
-  const handleCreateKPICate = () => {
+  console.log("updateKpiManagerJobId",updateKpiManagerJobId)
+
+  const handleCreateKPIManager = () => {
     data = {
-      name: kpiCategoriesName,
-      description: kpiCategoriesDes,
+        kpiName: kpiManagerName,
+      description: kpiManagerDes,
+      kpiTypeId: kpiManagerTypeId,
+      target :kpiManagerTarget,
+      jobId: kpiManagerJobId,
+      userId: "8f339945-7084-40a6-bddd-fd605686aa4b"
     };
-    dispatch(addNewKPICate(data));
+    dispatch(addNewKPIManager(data));
   };
 
-  const handleUpdateKPICate = () => {
+  const handleUpdateKPIManager = () => {
     const data = {
-      id: kpiCate.id,
-      name: updateKpiCategoriesName,
-      description: updateKpiCategoriesDes,
+      id: kpiManager.id,
+      kpiName: updateKpiManagerName,
+      description: updateKpiManagerDes,
+      kpiTypeId: updateKpiManagerTypeId,
+      jobId: updateKpiManagerJobId,
+      userId: "8f339945-7084-40a6-bddd-fd605686aa4b"
     };
-    dispatch(updateKPICategories(data));
+    dispatch(updateKPIManager(data));
   };
 
   useEffect(() => {
@@ -94,11 +136,14 @@ function CategoryKPI() {
       setIsHiddenCreate(true);
       setIsHiddenUpdate(true);
 
-      setKpiCategoriesName("");
-      setKpiCategoriesDes("");
+      setKpiManagerName("");
+      setKpiManagerDes("");
       dispatch(setActionStatus(0));
     }
   }, [actionStatusCode]);
+
+  console.log(allKpiManager)
+  console.log("allKpiCategories",allKpiCategories)
 
   return (
     <LayoutAdmin>
@@ -162,8 +207,9 @@ function CategoryKPI() {
                     type="text"
                     name="email"
                     id="accounts-search"
+                    onChange={(e) => setSearch(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                    placeholder="Tìm kiếm danh mục kpi"
+                    placeholder="Tìm kiếm kpi"
                   />
                 </div>
               </form>
@@ -225,12 +271,24 @@ function CategoryKPI() {
                       scope="col"
                       className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
                     >
+                      Chỉ tiêu
+                    </th>
+                    <th
+                      scope="col"
+                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                    >
+                      Danh mục KPI
+                    </th>
+                    <th
+                      scope="col"
+                      className="p-4 text-xs font-medium text-left text-gray-500 uppercase"
+                    >
                       Hành động
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {searchKpiCategories?.map((item, key) => {
+                  {searchKpiManager?.map((item, key) => {
                     return (
                       <tr className="hover:bg-gray-100" key={key}>
                         <td className="w-4 p-4">
@@ -251,14 +309,20 @@ function CategoryKPI() {
                         </td>
                         <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
                           <div className="text-base font-semibold text-gray-900">
-                            {item.id}
+                            {key + 1}
                           </div>
                         </td>
                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
-                          {item.name}
+                          {item.kpiName}
                         </td>
                         <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
                           {item.description}
+                        </td>
+                        <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                          {item.target}
+                        </td>
+                        <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap">
+                          {allKpiCategories.map((pre) => (pre.id === item.kpiCategory.id) ? (pre.name): (<></>))}
                         </td>
 
                         <td className="p-4 space-x-2 whitespace-nowrap">
@@ -288,7 +352,7 @@ function CategoryKPI() {
                             id="deleteaccountButton"
                             onClick={() => {
                               if (window.confirm("confirm_delete")) {
-                                dispatch(deleteKPICategories(item.id));
+                                dispatch(deleteKPIManager(item.id));
                               }
                             }}
                             className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300"
@@ -308,7 +372,7 @@ function CategoryKPI() {
                             Xóa
                           </button>
                           <Link
-                            to={`/kpi_categories_detail/${item.id}`}
+                            to={`/kpis/${item?.id}`}
                             type="button"
                             className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300"
                           >
@@ -399,23 +463,42 @@ function CategoryKPI() {
               </button>
             </div>
             <div className="p-6 space-y-6">
-              <form action="#">
+            <form action="#">
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="fullName"
+                      htmlFor="kpiName"
                       className="block mb-2 text-sm font-medium text-gray-900 "
                     >
                       Tên kpi
                     </label>
                     <input
                       type="text"
-                      name="first-name"
-                      onChange={(e) =>
-                        setUpdateKpiCategoriesName(e.target.value)
-                      }
-                      defaultValue={updateKpiCategoriesName}
-                      id="full-name"
+                      name="kpiName"
+                      onChange={(e) => {
+                        setUpdateKpiManagerName(e.target.value);
+                      }}
+                      value={updateKpiManagerName}
+                      id="kpiName"
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                      required
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="target"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Target
+                    </label>
+                    <input
+                      type="text"
+                      name="target"
+                      onChange={(e) => {
+                        setUpdateKpiManagerTarget(+e.target.value);
+                      }}
+                      value={updateKpiManagerTarget}
+                      id="target"
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                       required
                     />
@@ -431,19 +514,65 @@ function CategoryKPI() {
                     <textarea
                       id="biography"
                       rows="4"
-                      onChange={(e) =>
-                        setUpdateKpiCategoriesDes(e.target.value)
-                      }
-                      defaultValue={updateKpiCategoriesDes}
                       className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
+                      onChange={(e) => {
+                        setUpdateKpiManagerDes(e.target.value);
+                      }}
+                      value={updateKpiManagerDes}
                     ></textarea>
+                  </div>
+                  <div className="col-span-6">
+                    <label
+                      htmlFor="biography"
+                      className="block  text-sm font-medium text-gray-900 "
+                    >
+                      Danh mục KPI : 
+                    </label>
+                    <span className="text-xs mb-2">Danh mục kpi hiện tại là :{allKpiCategories.map((item, key) => item.id === updateKpiManagerTypeId ? (item.name): (<></>) )}</span>
+                    <select
+                      id="category-create"
+                      onChange={(e) => {
+                        setUpdateKpiManagerTypeId(e.target.value);
+                      }}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    >
+                      <option selected=""></option>
+                      {allKpiCategories.map((item, key) => {
+                        return (
+                          <option value={item.id} id={item.id} key={key}>{item.name}</option>
+                        )
+                      })}
+                    </select>
+                  </div>
+                  <div className="col-span-6">
+                    <label
+                      htmlFor="biography"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Danh mục công việc
+                    </label>
+                    <span className="text-xs mb-2">Danh mục công việc hiện tại là :{allJob.map((item, key) => item.id === updateKpiManagerJobId ? (item.title): (<></>) )}</span>
+                    <select
+                      id="category-create"
+                      onChange={(e) => {
+                        setUpdateKpiManagerJobId(e.target.value);
+                      }}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    >
+                      <option selected=""></option>
+                      {allJob.map((item, key) => {
+                        return (
+                          <option value={item.id} id={item.id} key={key}>{item.title}</option>
+                        )
+                      })}
+                    </select>
                   </div>
                 </div>
                 <div className=" py-6 border-t border-gray-200 rounded-b flex justify-end  ">
                   <button
                     className="bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     type="button"
-                    onClick={handleUpdateKPICate}
+                    onClick={handleUpdateKPIManager}
                   >
                     Lưu
                   </button>
@@ -491,19 +620,38 @@ function CategoryKPI() {
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="fullName"
+                      htmlFor="kpiName"
                       className="block mb-2 text-sm font-medium text-gray-900 "
                     >
                       Tên kpi
                     </label>
                     <input
                       type="text"
-                      name="first-name"
+                      name="kpiName"
                       onChange={(e) => {
-                        setKpiCategoriesName(e.target.value);
+                        setKpiManagerName(e.target.value);
                       }}
-                      value={kpiCategoriesName}
-                      id="full-name"
+                      value={kpiManagerName}
+                      id="kpiName"
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                      required
+                    />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label
+                      htmlFor="target"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Target
+                    </label>
+                    <input
+                      type="text"
+                      name="target"
+                      onChange={(e) => {
+                        setKpiManagerTarget(+e.target.value);
+                      }}
+                      value={kpiManagerTarget}
+                      id="target"
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                       required
                     />
@@ -521,17 +669,61 @@ function CategoryKPI() {
                       rows="4"
                       className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                       onChange={(e) => {
-                        setKpiCategoriesDes(e.target.value);
+                        setKpiManagerDes(e.target.value);
                       }}
-                      value={kpiCategoriesDes}
+                      value={kpiManagerDes}
                     ></textarea>
+                  </div>
+                  <div className="col-span-6">
+                    <label
+                      htmlFor="biography"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Danh mục KPI
+                    </label>
+                    <select
+                      id="category-create"
+                      onChange={(e) => {
+                        setKpiManagerTypeId(e.target.value);
+                      }}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    >
+                      <option selected=""></option>
+                      {allKpiCategories.map((item, key) => {
+                        return (
+                          <option value={item.id} id={item.id} key={key}>{item.name}</option>
+                        )
+                      })}
+                    </select>
+                  </div>
+                  <div className="col-span-6">
+                    <label
+                      htmlFor="biography"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
+                    >
+                      Danh mục công việc
+                    </label>
+                    <select
+                      id="category-create"
+                      onChange={(e) => {
+                        setKpiManagerJobId(e.target.value);
+                      }}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    >
+                      <option selected=""></option>
+                      {allJob.map((item, key) => {
+                        return (
+                          <option value={item.id} id={item.id} key={key}>{item.title}</option>
+                        )
+                      })}
+                    </select>
                   </div>
                 </div>
                 <div className=" py-6 border-t border-gray-200 rounded-b flex justify-end  ">
                   <button
                     className="bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     type="button"
-                    onClick={handleCreateKPICate}
+                    onClick={handleCreateKPIManager}
                   >
                     Lưu
                   </button>
@@ -545,4 +737,4 @@ function CategoryKPI() {
   );
 }
 
-export default CategoryKPI;
+export default KPIManager;
