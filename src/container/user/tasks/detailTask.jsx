@@ -3,7 +3,7 @@ import LayoutTask from ".";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { deleteRole } from "../../../thunks/RoleThunk";
 import { deleteJob, getJobById } from "../../../thunks/JobsThunk";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLayoutEffect } from "react";
 import { priorities, statusList } from "../../../constants/fakedata";
@@ -11,7 +11,7 @@ import { priorities, statusList } from "../../../constants/fakedata";
 function DetailTask() {
   const { id } = useParams();
   const { singleJob} = useSelector((state) => state.jobsReducer);
-
+  const nav = useNavigate();
   const dispatch = useDispatch();
   console.log(id)
   useLayoutEffect(() => {
@@ -183,7 +183,11 @@ function DetailTask() {
                   type="button"
                   onClick={() => {
                     if (window.confirm("Bạn có muốn xóa công việc này")) {
-                      dispatch(deleteJob(String(singleJob.response.id)));
+                      dispatch(deleteJob(String(singleJob.response.id))).then((resp) => {
+                        if (!resp?.error) {
+                          nav("/task-list");
+                        }
+                      });;
                     }
                   }}
                 >

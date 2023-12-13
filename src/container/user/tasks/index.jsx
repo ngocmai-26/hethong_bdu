@@ -12,15 +12,15 @@ import { Link } from "react-router-dom";
 import Layout from "../layout";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllRole } from "../../../thunks/RoleThunk";
-import { setSearchJob } from "../../../slices/JobsSlice";
-import { getAllJob } from "../../../thunks/JobsThunk";
+import { setActionStatus, setReceiver, setSearchJob, setStaff } from "../../../slices/JobsSlice";
+import { addNewJob, getAllJob } from "../../../thunks/JobsThunk";
 import { priorities, statusList } from "../../../constants/fakedata";
 import { getAllUser } from "../../../thunks/UserThunk";
 
 function LayoutTask({ children }) {
   const role = JSON.parse(localStorage.getItem("auth_role"));
   const { allRole } = useSelector((state) => state.roleReducer);
-  const { allJob, searchJobs } = useSelector((state) => state.jobsReducer);
+  const { allJob, searchJobs, actionStatusCode } = useSelector((state) => state.jobsReducer);
   const { allUser } = useSelector((state) => state.userReducer);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState(0);
@@ -30,12 +30,6 @@ function LayoutTask({ children }) {
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
   };
-  useLayoutEffect(() => {
-    dispatch(getAllRole());
-    dispatch(getAllUser());
-  }, []);
-
-  console.log(allUser)
 
   useEffect(() => {
     const listSearchJob = searchJobs.filter((item) =>
@@ -49,6 +43,12 @@ function LayoutTask({ children }) {
   useLayoutEffect(() => {
     if (allJob.length <= 0) {
       dispatch(getAllJob());
+    }
+    if (allUser.length <= 0) {
+      dispatch(getAllUser());
+    }
+    if (allRole.length <= 0) {
+      dispatch(getAllRole());
     }
   }, []);
 
@@ -64,29 +64,55 @@ function LayoutTask({ children }) {
 
   //Thêm jobs
 
-  const [jobDetail, setJobDetail ] = useState({})
-  const [job, setJob] = useState({});
+  const [jobDetail, setJobDetail] = useState({ note: "", denyReason: "" });
+  const [job, setJob] = useState({
+    status: 1,
+    kpi: 0,
+    isTask: false,
+  });
 
   const handleSubmit = () => {
     if (todo === "") {
       alert("Hãy nhập nội dung!");
     } else {
-        setJobDetail({
-          ...jobDetail,
-          note: todo,
-          target: target
-        })
-      
+      setJobDetail({
+        ...jobDetail,
+        note: todo,
+        target: target,
+      });
+
       setState([...state, { stt: state.length + 1, target, todo }]);
       setTodo("");
       setTarget(0);
     }
   };
 
+  const handleCreateJob = () => {
+    setJob({
+      ...job,
+      kpi: 0,
+      isTask: false,
+      jobDetail: jobDetail,
+    });
+    dispatch(addNewJob(job))
+    dispatch(setStaff(job.staff))
+    dispatch(setReceiver(job.receiver))
+  };
+
   const deleteJob = (item) => {
     const list = state.filter((e) => e !== item);
     setState(list);
   };
+  useEffect(() => {
+    if (actionStatusCode === 200 || actionStatusCode === 201) {
+      handleHiddenCreate(true);
+      setJob(job)
+      setJobDetail(jobDetail)
+      setActionStatus(0)
+    }
+  }, [actionStatusCode]);
+  
+
   return (
     <Layout>
       <div className="header-task ">
@@ -225,7 +251,7 @@ function LayoutTask({ children }) {
                     <div className="md:col-span-2 ">
                       <div className="due">
                         <div className="grid grid-cols-1 md:grid-cols-5 sm:grid-cols-4 justify-between">
-                          <div className="md:col-span-3 sm:col-span-2">
+                          {/* <div className="md:col-span-3 sm:col-span-2">
                             <label
                               htmlFor="category-create"
                               className="block mb-2 text-xs font-medium text-gray-900"
@@ -248,7 +274,7 @@ function LayoutTask({ children }) {
                               <option value="3">Đến hạn</option>
                               <option value="4">Hoàn thành</option>
                             </select>
-                          </div>
+                          </div> */}
                           <div className="col-span-2">
                             <label
                               htmlFor="category-create"
@@ -281,7 +307,6 @@ function LayoutTask({ children }) {
                                     timeEnd: e.target.value,
                                   })
                                 }
-                               
                                 id="timeEnd"
                                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                                 required
@@ -328,24 +353,34 @@ function LayoutTask({ children }) {
                         <div className="flex justify-between">
                           <textarea
                             className="input_todo w-full shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-2"
-                            value={todo}
+                            value={jobDetail.description}
                             rows="5"
-                            placeholder="Danh sách công việc..."
-                            onChange={(e) => setTodo(e.target.value)}
+                            placeholder="Mô tả công việc"
+                            onChange={(e) =>
+                              setJobDetail({
+                                ...jobDetail,
+                                description: e.target.value,
+                              })
+                            }
                           />
                           <input
                             type="number"
                             name="chitieu"
-                            value={target}
+                            value={jobDetail.target}
                             id="chitieu"
                             className="shadow-sm ms-2 w-2/12 h-8 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5"
                             placeholder="Chỉ tiêu"
-                            onChange={(e) => setTarget(e.target.value)}
+                            onChange={(e) =>
+                              setJobDetail({
+                                ...jobDetail,
+                                target: e.target.value,
+                              })
+                            }
                             required
                           />
                         </div>
 
-                        <div className="text-right py-3">
+                        {/* <div className="text-right py-3">
                           <button
                             onClick={handleSubmit}
                             type="button"
@@ -353,7 +388,7 @@ function LayoutTask({ children }) {
                           >
                             Thêm
                           </button>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="max-h-64 overflow-y-auto overflow-hidden">
                         <div className="list-todo py-2">
@@ -424,44 +459,32 @@ function LayoutTask({ children }) {
                       </form>
                       <div className="users-selection-list-wrapper py-2 h-72 overscroll-y-none overflow-y-auto overflow-hidden">
                         <div className="h-auto ">
-                          {allRole.filter((item) =>
-                            item.roleName !== "ADMIN" &&
-                            item.roleName !== "MANAGER" ? (
-                              <div className="users-item flex py-1 px-2 ">
-                                <div className="avatar w-2/12 ">
-                                  <img
-                                    src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
-                                    alt=""
-                                    className=" w-8 h-8  rounded-full"
-                                  />
-                                </div>
-                                <div className="name w-8/12 my-auto">
-                                  <span className="text-xs ">
-                                    Nguyễn Thị Ngọc Mai
-                                  </span>
-                                </div>
+                          {allUser.map((item) => (
+                            <button
+                              type="button"
+                              onClick={(e) =>
+                                setJob({
+                                  ...job,
+                                  staff: item?.user?.id,
+                                })
+                              }
+                              className={`users-item flex py-1 px-2 w-full text-left ${(item.user.id === job?.staff)? "bg-gray-300": ""}`}
+                            >
+                              <div className="avatar w-2/12 ">
+                                <img
+                                  src="https://batterydown.vn/wp-content/uploads/2022/05/hinh-anh-avatar-de-thuong-cute-nhat.jpg"
+                                  alt=""
+                                  className=" w-8 h-8  rounded-full"
+                                />
                               </div>
-                            ) : (
-                              <></>
-                            )
-                          )}
+                              <div className="name w-8/12 my-auto">
+                                <span className="text-xs ">
+                                  {item.user.fullName}
+                                </span>
+                              </div>
+                            </button>
+                          ))}
                         </div>
-                      </div>
-                      <span className="text-xs font-medium">
-                        Người chịu trách nhiệm
-                      </span>
-                      <hr />
-                      <div className="select-responsible">
-                        <select
-                          id="category-create"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5 w-full mt-2"
-                        >
-                          <option selected=""></option>
-                          <option defaultValue="FL">Giảng viên</option>
-                          <option defaultValue="RE">Nhân viên</option>
-                          <option defaultValue="AN">Lãnh đạo khoa</option>
-                          <option defaultValue="VU">Admin</option>
-                        </select>
                       </div>
                     </div>
                     <div className="h-full">
@@ -485,19 +508,44 @@ function LayoutTask({ children }) {
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
                           />
                         </div>
-                        <span className="text-xs font-medium">Links</span>
+                        <span className="text-xs font-medium">
+                          Link/Email liên hệ
+                        </span>
                         <hr />
                         <div className="relative mt-1">
-                          <select
+                          <input
                             id="category-create"
+                            onChange={(e) =>
+                              setJobDetail({
+                                ...jobDetail,
+                                additionInfo: e.target.value,
+                              })
+                            }
                             placeholder="Link with contact person"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5 w-full mt-2"
+                          ></input>
+                        </div>
+                        <span className="text-xs font-medium">
+                          Người chịu trách nhiệm
+                        </span>
+                        <hr />
+                        <div className="select-responsible">
+                          <select
+                            id="category-create"
+                            onChange={(e) =>
+                              setJob({
+                                ...job,
+                                receiver: e.target.value,
+                              })
+                            }
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5 w-full mt-2"
                           >
-                            <option selected="">Link liên lạc</option>
-                            <option defaultValue="FL">Giảng viên</option>
-                            <option defaultValue="RE">Nhân viên</option>
-                            <option defaultValue="AN">Lãnh đạo khoa</option>
-                            <option defaultValue="VU">Admin</option>
+                            <option selected=""></option>
+                            {allUser.map((item) => (
+                              <option value={item.user.id}>
+                                {item.user.fullName}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       </form>
@@ -520,7 +568,8 @@ function LayoutTask({ children }) {
                     </div>
                     <button
                       className=" bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-sm  text-sm px-5 py-1.5 text-center"
-                      type="submit"
+                      type="button"
+                      onClick={handleCreateJob}
                     >
                       Lưu
                     </button>

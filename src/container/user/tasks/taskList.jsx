@@ -10,7 +10,7 @@ import { setSearchJob } from "../../../slices/JobsSlice";
 
 
 function TaskList() {
-  const { allJob, searchJobs } = useSelector((state) => state.jobsReducer);
+  const { allJob, searchJobs, staff, receiver } = useSelector((state) => state.jobsReducer);
 
   const [isAccept, setIsAccept] = useState(false);
   const [isRefuse, setIsRefuse] = useState(false);
@@ -23,6 +23,7 @@ function TaskList() {
   const dispatch = useDispatch();
 
   const handleAccept = (item) => {
+    console.log(item)
     setStatusChange(item)
     setIsAccept(!isAccept);
   };
@@ -30,18 +31,28 @@ function TaskList() {
     setIsRefuse(!isRefuse);
   };
 
-  useLayoutEffect(() => {
-    if (allJob.length <= 0) {
+  // useLayoutEffect(() => {
+  //   if (allJob.length <= 0) {
+  //     dispatch(getAllJob());
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    if (allJob?.length <= 0) {
       dispatch(getAllJob());
+    }else {
+      dispatch(setSearchJob(allJob)); 
     }
-  }, []);
+  }, [allJob, dispatch])
+
 
   const handleSendAccept = () => {
-    const updatedStatus = { ...statusChange };
+    const updatedStatus = { ...statusChange, staff: staff, receiver:receiver, isTask: true };
     updatedStatus.status = 2
     setStatusChange(updatedStatus)
-    // dispatch(updateJob(statusChange))
-    console.log(statusChange)
+    
+    console.log(updatedStatus)
+    dispatch(updateJob(updatedStatus))
     setIsAccept(false);
     setIsRefuse(false);
   };
