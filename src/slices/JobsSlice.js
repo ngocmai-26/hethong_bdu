@@ -6,8 +6,8 @@ const initState = {
   singleJob: {},
   listJob: [],
   actionStatusCode: 0,
-  staff: "",
-  receiver: "",
+  listJobRaz : [],
+
   manager: {
     jobs: [],
     jobUpdate: {},
@@ -36,11 +36,8 @@ const JobsSlice = createSlice({
     setJobUpdate: (state, { payload }) => {
       state.manager.jobUpdate = payload;
     },
-    setStaff: (state, { payload }) => {
-      state.staff = payload
-    },
-    setReceiver: (state, { payload }) => {
-      state.receiver = payload;
+    setListJobRaz: (state, { payload }) => {
+      state.listJobRaz = payload
     },
     setSearchJob: (state, { payload }) => {
       state.searchJobs = payload;
@@ -48,6 +45,6 @@ const JobsSlice = createSlice({
   },
 });
 
-export const { setJobs, setAllJob,setSingleJob, setStaff, setReceiver, setListJob, setActionStatus, setJobUpdate, setSearchJob } = JobsSlice.actions;
+export const { setJobs, setAllJob,setSingleJob, setListJobRaz, setListJob, setActionStatus, setJobUpdate, setSearchJob } = JobsSlice.actions;
 
 export default JobsSlice.reducer;

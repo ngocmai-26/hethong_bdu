@@ -105,7 +105,7 @@ function CategoryTarget() {
   }, [allRole, dispatch])
 
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setUpdateRoleDes(roleDetail?.description);
     setUpdateRoleName(roleDetail?.roleName);
   }, [roleDetail]);
@@ -118,7 +118,6 @@ function CategoryTarget() {
     };
     dispatch(updateRole(data));
     setIsHiddenUpdate(!isHiddenUpdate);
-    console.log(data);
   };
 
   const handleUpdatePer = () => {
@@ -130,7 +129,6 @@ function CategoryTarget() {
   };
   useEffect(() => {
     if (actionStatusCode === 200) {
-      console.log("actionStatusCode", actionStatusCode);
       setIsHiddenCreate(true);
       setIsHiddenPer(true);
       setNewRoleName("");

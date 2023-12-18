@@ -16,72 +16,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
@@ -104,72 +104,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
@@ -191,72 +191,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
@@ -278,72 +278,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
@@ -365,72 +365,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
@@ -452,44 +452,44 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
@@ -511,72 +511,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
@@ -598,72 +598,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
@@ -685,72 +685,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
@@ -772,72 +772,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
@@ -859,72 +859,72 @@ function ListNote() {
                           Prepare slide deck for client meeting
                         </p>
                         <div className="w-full py-3">
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox Default checkbox Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>
                           </div>
-                          <div class="flex items-center mb-4">
+                          <div className="flex items-center mb-4">
                             <input
                               id="default-checkbox"
                               type="checkbox"
                               value=""
-                              class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                              className="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label
                               htmlFor="default-checkbox"
-                              class="ml-2 text-sm font-medium text-gray-700"
+                              className="ml-2 text-sm font-medium text-gray-700"
                             >
                               Default checkbox
                             </label>

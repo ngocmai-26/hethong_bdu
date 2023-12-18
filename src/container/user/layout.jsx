@@ -15,7 +15,6 @@ function Layout({children}) {
             <div className=" w-full m-auto max-w-screen-xl ">
             {children}
             </div>
-            
             <Footer />
         </div>
      );

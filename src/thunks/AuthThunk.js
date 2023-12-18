@@ -34,6 +34,7 @@ export const login = createAsyncThunk(
       localStorage.setItem('auth_token', dataJson.response?.token)
       localStorage.setItem('auth_role', JSON.stringify(dataJson.response?.role))
       dispatch(setRefresh(true))
+      console.log("dataJson", dataJson)
       return dataJson
     } catch (e) {
       console.log(e)
@@ -72,15 +73,14 @@ export const changePassword = createAsyncThunk(
         dispatch(
           setAlert({
             type: "error",
-            content: dataJson?.defaultMessage,
+            content: dataJson?.message,
           })
         );
-        return rejectWithValue("something error");
+        return;
       }
       dispatch(
         setAlert({ type: "success", content: "Đổi mật khẩu thành công" })
       );
-      dispatch(logout());
     } catch (e) {
       console.log(e);
     }

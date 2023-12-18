@@ -3,12 +3,13 @@ import { setActionStatus, setAllRole, setListPermission, setSingleRole } from ".
 import { API } from "../constants/api";
 import { setAlert } from "../slices/AlertSlice";
 
-const token = localStorage.getItem('auth_token')
 
 export const getAllRole = createAsyncThunk(
     "/roles",
     async (_, { dispatch, rejectWithValue }) => {
         try {
+const token = localStorage.getItem('auth_token')
+
       const resp = await fetch(`${API.uri}/roles`, {
         method: "GET",
         headers: {
@@ -30,6 +31,7 @@ export const getRoleById = createAsyncThunk(
   "/roles/id",
   async (id, { dispatch, rejectWithValue }) => {
     try {
+      const token = localStorage.getItem('auth_token')
       let uri = `${API.uri}/roles/${id}`;
 
       const resp = await fetch(uri, {
@@ -54,7 +56,7 @@ export const deleteRole = createAsyncThunk(
   "/roles/id",
   async (id, { dispatch, rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("auth_token");
+      const token = localStorage.getItem('auth_token')
       const resp = await fetch(`${API.uri}/roles/${id}`, {
         method: "DELETE",
         headers: {
@@ -85,8 +87,7 @@ export const updateRole = createAsyncThunk(
   "/roles/id",
   async (data, { dispatch, rejectWithValue }) => {
     try {
-      console.log("here");
-      const token = localStorage.getItem("auth_token");
+      const token = localStorage.getItem('auth_token')
       const resp = await fetch(`${API.uri}/roles/${data.id}`, {
         method: "PUT",
         headers: {
@@ -118,10 +119,8 @@ export const updateRole = createAsyncThunk(
 export const updatePermission = createAsyncThunk(
   "/permission",
   async (data, { dispatch, rejectWithValue }) => {
-    console.log("data",data)
     try {
-      console.log("here");
-      const token = localStorage.getItem("auth_token");
+      const token = localStorage.getItem('auth_token')
       const resp = await fetch(`${API.uri}/roles/give_permission_for_role/${data.id}`, {
         method: "PUT",
         headers: {
@@ -154,7 +153,7 @@ export const updatePermission = createAsyncThunk(
 export const addNewRole = createAsyncThunk(
   "role/add",
   async (data, { dispatch, rejectWithValue }) => {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem('auth_token')
     if (!token) {
       dispatch(
         setAllRole({

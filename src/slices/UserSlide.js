@@ -6,6 +6,10 @@ const initState = {
   allUser: [],
   refresh: false,
   searchUser: [],
+  manager: {
+    users: [],
+    userUpdate: {},
+  },
 };
 const UserSlice = createSlice({
   name: "users",
@@ -19,6 +23,9 @@ const UserSlice = createSlice({
     },
     setSearchUser: (state, { payload }) => {
       state.searchUser = payload;
+    },
+    setUserUpdate: (state, { payload }) => {
+      state.manager.userUpdate = payload;
     },
   },
 });

@@ -1,8 +1,25 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Layout from "../layout";
 import { faClipboardList, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { useLayoutEffect } from "react";
+import { getAllJob } from "../../../thunks/JobsThunk";
+import { getAllUser } from "../../../thunks/UserThunk";
 
 function DashBoard() {
+  const dispatch = useDispatch();
+  const { allUser } = useSelector((state) => state.userReducer);
+  const { allJob } = useSelector((state) => state.jobsReducer);
+  
+  useLayoutEffect(() => {
+    if (allJob?.length <= 0) {
+      dispatch(getAllJob());
+    }
+    if (allUser?.length <= 0) {
+      dispatch(getAllUser());
+    }
+  }, []);
+
   return (
     <Layout>
       <div className="header-dashboard ">
@@ -20,7 +37,7 @@ function DashBoard() {
                     <FontAwesomeIcon icon={faUsers} className="text-xl text-slate-400" />
                 </div>
                 <div className="stack-content">
-                    <p className="text-3xl leading-9">9</p>
+                    <p className="text-3xl leading-9">{allUser.length+1}</p>
                 </div>
                 <div className="text-xs font-medium text-slate-400">Total Users</div>
             </div>
@@ -29,9 +46,9 @@ function DashBoard() {
                     <FontAwesomeIcon icon={faClipboardList} className="text-xl text-slate-400" />
                 </div>
                 <div className="stack-content">
-                    <p className="text-3xl leading-9">9</p>
+                    <p className="text-3xl leading-9">{allUser.length+1}</p>
                 </div>
-                <div className="text-xs font-medium text-slate-400">Total Tasks</div>
+                <div className="text-xs font-medium text-slate-400">Total Jobs</div>
             </div>
             <div className="stack-item border-2 bg-white w-full p-3">
                 100

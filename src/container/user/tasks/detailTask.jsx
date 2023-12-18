@@ -3,23 +3,27 @@ import LayoutTask from ".";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { deleteRole } from "../../../thunks/RoleThunk";
 import { deleteJob, getJobById } from "../../../thunks/JobsThunk";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLayoutEffect } from "react";
 import { priorities, statusList } from "../../../constants/fakedata";
+import moment from "moment";
+import { getAllUser } from "../../../thunks/UserThunk";
 
 function DetailTask() {
   const { id } = useParams();
-  const { singleJob} = useSelector((state) => state.jobsReducer);
+  const { singleJob } = useSelector((state) => state.jobsReducer);
+  const { allUser } = useSelector((state) => state.userReducer);
   const nav = useNavigate();
   const dispatch = useDispatch();
-  console.log(id)
   useLayoutEffect(() => {
     if (id) {
       dispatch(getJobById(String(id)));
     }
+    if (allUser.length <= 0) {
+      dispatch(getAllUser());
+    }
   }, []);
-  console.log(singleJob)
   return (
     <LayoutTask>
       <div className="relative w-full h-full m-auto md:h-auto">
@@ -41,18 +45,36 @@ function DetailTask() {
                         >
                           Trạng thái công việc
                         </label>
-                        {statusList.map((item, key)=> item?.id === singleJob?.response?.status? <span className={`text-xs font-bold ${item.color}`} key={key}>{item.name}</span>: <></>)}
-                        
+                        {statusList.map((item, key) =>
+                          item?.id === singleJob?.response?.status ? (
+                            <span
+                              className={`text-xs font-bold ${item.color}`}
+                              key={key}
+                            >
+                              {item.name}
+                            </span>
+                          ) : (
+                            <></>
+                          )
+                        )}
                       </div>
                       <div className="col-span-3">
                         <div className="grid grid-cols-2">
                           <div>
                             <p className="text-xs">Thời gian bắt đầu :</p>
-                            <p className="text-xs">16/10/2023</p>
+                            <p className="text-xs">
+                              {moment(
+                                singleJob?.response?.jobDetail?.timeStart
+                              ).format("YYYY-MM-DD")}
+                            </p>
                           </div>
                           <div>
                             <p className="text-xs">Thời gian kết thúc :</p>
-                            <p className="text-xs">16/10/2023</p>
+                            <p className="text-xs">
+                              {moment(
+                                singleJob?.response?.jobDetail?.timeEnd
+                              ).format("YYYY-MM-DD")}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -60,20 +82,28 @@ function DetailTask() {
                   </div>
                   <div className="py-2">
                     <p className="text-xs font-medium">Trạng thái</p>
-                    {priorities.map((item)=> item?.id === singleJob?.response?.priority? <p className={`text-xs font-bold ${item.color}`}>{item.name}</p>: <></>)}
-                    
+                    {priorities.map((item) =>
+                      item?.id === singleJob?.response?.priority ? (
+                        <p className={`text-xs font-bold ${item.color}`}>
+                          {item.name}
+                        </p>
+                      ) : (
+                        <></>
+                      )
+                    )}
                   </div>
                   <div className="information-plan mt-2 flex justify-between">
-                    <span className="text-base font-medium">
-                      {singleJob?.response?.title}
+                    <span className="text-sm font-medium">
+                      Tên công việc:{" "}
+                      <span className="text-red-400">
+                        {singleJob?.response?.title}
+                      </span>
                     </span>
                   </div>
-                  <div className="information-plan mt-2">
+                  <div className="information-plan mt-2 text-sm">
+                    <span>Mô tả công việc</span>
                     <div className="text-sm">
-                      <p>- Lập trình UI task </p>
-                      <p>- Tiếp tục Clothes </p>
-                      <p>- Test web/ lam web </p>
-                      <p>- Đánh giá học sinh </p>
+                      <p>{singleJob?.response?.jobDetail.description}</p>
                     </div>
                   </div>
                 </div>
@@ -96,27 +126,22 @@ function DetailTask() {
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs font-medium">
-                    Người chịu trách nhiệm
-                  </span>
-                  <hr />
-                  <span className="text-xs ">Nguyễn Thị Ngọc Mai</span>
                 </div>
                 <div className="h-full">
                   <form action="#" method="GET" className="">
                     <span className="text-xs font-medium">Đường dẫn File</span>
                     <hr />
                     <div className="relative mt-1">
-                      <a href="#" className="underline text-xs">aaaa</a>
-                    </div>
-                    <span className="text-xs font-medium">Link liên hệ</span>
-                    <hr />
-                    <div className="relative mt-1">
-                      <a href="">
-                        <span className="text-xs ">
-                          ngocmai262626@gmail.com
-                        </span>
+                      <a href="#" className="underline text-xs">
+                        {singleJob?.response?.jobDetail.additionInfo}
                       </a>
+                    </div>
+                    <div className="relative mt-1">
+                      <span className="text-xs font-medium">
+                        Người chịu trách nhiệm
+                      </span>
+                      <hr />
+                      <span className="text-xs ">Nguyễn Thị Ngọc Mai</span>
                     </div>
                   </form>
                 </div>
@@ -124,53 +149,23 @@ function DetailTask() {
                   <p className="text-xs font-bold py-1">Báo cáo tiến độ</p>
                   <div className="h-80 overflow-y-auto overflow-hidden">
                     <div className="py-1">
-                      <span className="text-xs font-medium">
-                        Ngày: 11/11/2023
-                      </span>
                       <hr />
                       <div className="relative mt-1">
                         <span className="text-xs">
-                          Qua bài viết này chúng tôi đã hướng dẫn bạn cách lấy
-                          ngày giờ hiện tại – current Date Time bằng javascript.
-                          Nếu có bất kỳ đóng góp nào bạn có thể để lại bình luận
-                          ở bên dưới. Bạn cũng có thể tham khảo thêm các dịch vụ
-                          Web Hosting, Cloud VPS, Email Business do chúng tôi
-                          cung cấp hoặc xem các bài viết chia sẻ khác của chúng
-                          tôi tại đây
+                          <span className="text-xs font-medium">Mô tả: </span>
+                          {singleJob?.response?.jobDetail.note}
                         </span>
                       </div>
-                    </div>
-                    <div className="py-1">
-                      <span className="text-xs font-medium">
-                        Ngày: 11/11/2023
-                      </span>
-                      <hr />
                       <div className="relative mt-1">
                         <span className="text-xs">
-                          Qua bài viết này chúng tôi đã hướng dẫn bạn cách lấy
-                          ngày giờ hiện tại – current Date Time bằng javascript.
-                          Nếu có bất kỳ đóng góp nào bạn có thể để lại bình luận
-                          ở bên dưới. Bạn cũng có thể tham khảo thêm các dịch vụ
-                          Web Hosting, Cloud VPS, Email Business do chúng tôi
-                          cung cấp hoặc xem các bài viết chia sẻ khác của chúng
-                          tôi tại đây
+                          <span className="text-xs font-medium">Tiến độ thực hiện: </span>
+                          {singleJob?.response?.jobDetail.verifyLink}
                         </span>
                       </div>
-                    </div>
-                    <div className="py-1">
-                      <span className="text-xs font-medium">
-                        Ngày: 11/11/2023
-                      </span>
-                      <hr />
                       <div className="relative mt-1">
                         <span className="text-xs">
-                          Qua bài viết này chúng tôi đã hướng dẫn bạn cách lấy
-                          ngày giờ hiện tại – current Date Time bằng javascript.
-                          Nếu có bất kỳ đóng góp nào bạn có thể để lại bình luận
-                          ở bên dưới. Bạn cũng có thể tham khảo thêm các dịch vụ
-                          Web Hosting, Cloud VPS, Email Business do chúng tôi
-                          cung cấp hoặc xem các bài viết chia sẻ khác của chúng
-                          tôi tại đây
+                          <span className="text-xs font-medium">Đường link dẫn chứng: </span>
+                          {singleJob?.response?.kpi}
                         </span>
                       </div>
                     </div>
@@ -183,22 +178,24 @@ function DetailTask() {
                   type="button"
                   onClick={() => {
                     if (window.confirm("Bạn có muốn xóa công việc này")) {
-                      dispatch(deleteJob(String(singleJob.response.id))).then((resp) => {
-                        if (!resp?.error) {
-                          nav("/task-list");
+                      dispatch(deleteJob(String(singleJob.response.id))).then(
+                        (resp) => {
+                          if (!resp?.error) {
+                            nav("/task-list");
+                          }
                         }
-                      });;
+                      );
                     }
                   }}
                 >
                   Xóa
                 </button>
-                <button
+                <Link to={"/task-list"}
                   className=" bg-blue-500 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-sm  text-sm px-5 py-1.5 text-center"
-                  type="submit"
+                  
                 >
-                  Save
-                </button>
+                  Đóng
+                </Link>
               </div>
             </form>
           </div>

@@ -237,9 +237,9 @@ function EvaluateKPI() {
             <div className="group-item py-3">
               <div className="flex justify-between py-2">
                 <p>Danh sách file minh chứng</p>
-                <div class="flex items-center justify-center border border-black px-3 py-1.5">
+                <div className="flex items-center justify-center border border-black px-3 py-1.5">
                   <button
-                    class="flex flex-col items-center justify-center text-xs "
+                    className="flex flex-col items-center justify-center text-xs "
                     type="button"
                   >
                     Thêm mới
@@ -270,7 +270,6 @@ function EvaluateKPI() {
                           name="email"
                           id="accounts-search"
                           className="border-2 bg-transparent text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
-                          
                         />
                       </div>
                     </div>

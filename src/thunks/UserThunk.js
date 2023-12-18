@@ -7,12 +7,12 @@ import { setAllUser } from "../slices/UserSlide";
 
   
 
-const token = localStorage.getItem("auth_token");
   export const addUser = createAsyncThunk(
-    "/account/create",
+    "/account",
     async (data, { dispatch, rejectWithValue }) => {
       try {
-        const resp = await fetch(`${API.uri}/account/create`, {
+        const token = localStorage.getItem("auth_token");
+        const resp = await fetch(`${API.uri}/account`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -50,6 +50,7 @@ const token = localStorage.getItem("auth_token");
     "/account",
     async (_, { dispatch, rejectWithValue }) => {
         try {
+          const token = localStorage.getItem('auth_token')
       const resp = await fetch(`${API.uri}/account`, {
         method: "GET",
         headers: {
@@ -65,4 +66,69 @@ const token = localStorage.getItem("auth_token");
         console.log(e);
       }
     }
+);
+
+
+export const deleteUser = createAsyncThunk(
+  "/account/delete/id",
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/account/delete/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (resp.status < 200 || resp.status >= 400) {
+        dispatch(
+          setAlert({
+            type: "error",
+            content: resp.json()?.defaultMessage ?? "Error when delete user",
+          })
+        );
+        return rejectWithValue();
+      }
+      dispatch(setAlert({ type: "success", content: "Success" }));
+      dispatch(getAllUser());
+    } catch (e) {
+      dispatch(
+        setAlert({ type: "error", content: "Error when delete users" })
+      );
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  "/update/id",
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('auth_token')
+      const resp = await fetch(`${API.uri}/account/${data.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
+      if (resp.status >= 200 && resp.status < 300) {
+        dispatch(
+          setAlert({ type: "success", content: "Update role success" })
+        );
+        dispatch(getAllUser());
+      } else {
+        dispatch(
+          setAlert({
+            type: "error",
+            content:  "Update role error ",
+          })
+        );
+        dispatch(getAllUser())
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 );

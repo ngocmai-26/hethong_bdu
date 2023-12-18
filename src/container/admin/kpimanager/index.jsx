@@ -61,14 +61,13 @@ function KPIManager() {
     setKpiManagerDetail(item);
   };
   
-  console.log("item",kpiManagerDetail)
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
   };
 
   //Tìm kiếm kpi
   useEffect(() => {
-    const listSearchKpiManager = searchKpiManager?.filter((item) =>
+    const listSearchKpiManager = allKpiManager?.filter((item) =>
       item?.kpiName?.toLowerCase().includes(search.toLowerCase())
     );
     if (listSearchKpiManager?.length !== 0) {
@@ -89,12 +88,16 @@ function KPIManager() {
 
   //lấy ra các kpi
   useEffect(() => {
-    if (allKpiManager.length <= 0) {
-      dispatch(getAllKPIManager());
-    }else {
+    if (allKpiManager.length > 0)  {
         dispatch(setSearchKPIManager(allKpiManager));
       }
   }, [allKpiManager, dispatch]);
+
+  useLayoutEffect(() => {
+    if (allKpiManager.length <= 0) {
+      dispatch(getAllKPIManager());
+    }
+  }, [])
 
   useLayoutEffect(() => {
     setUpdateKpiManagerName(kpiManagerDetail?.kpiName);
@@ -103,8 +106,6 @@ function KPIManager() {
     setUpdateKpiManagerJobId(kpiManagerDetail?.job?.id);
     setUpdateKpiManagerTarget(kpiManagerDetail?.target);
   }, [kpiManagerDetail]);
-
-  console.log("updateKpiManagerJobId",updateKpiManagerJobId)
 
   const handleCreateKPIManager = () => {
     data = {
@@ -131,7 +132,6 @@ function KPIManager() {
   };
 
   useEffect(() => {
-    console.log(isHiddenUpdate);
     if (actionStatusCode === 200) {
       setIsHiddenCreate(true);
       setIsHiddenUpdate(true);
@@ -142,8 +142,6 @@ function KPIManager() {
     }
   }, [actionStatusCode]);
 
-  console.log(allKpiManager)
-  console.log("allKpiCategories",allKpiCategories)
 
   return (
     <LayoutAdmin>

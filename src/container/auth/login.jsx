@@ -22,9 +22,11 @@ function Login() {
   const handleLogin = () => {
     if (validate()) {
       dispatch(login({username: username, password})).then((resp) => {
+        // window.location.reload(false);
         if (!resp?.error) {
           nav('/')
         }
+         
       })
     }
   }

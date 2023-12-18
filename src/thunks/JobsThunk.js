@@ -1,13 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { API } from '../constants/api'
 import { setAlert } from '../slices/AlertSlice'
-import { setActionStatus, setAllJob, setJobs, setSingleJob } from '../slices/JobsSlice'
+import {
+  setActionStatus,
+  setAllJob,
+  setJobs,
+  setSingleJob,
+} from '../slices/JobsSlice'
 
-const token = localStorage.getItem('auth_token')
 export const getAllJob = createAsyncThunk(
   '/jobs',
   async (_, { dispatch, rejectWithValue }) => {
     try {
+      const token = localStorage.getItem('auth_token')
       const resp = await fetch(`${API.uri}/jobs`, {
         method: 'GET',
         headers: {
@@ -17,7 +22,8 @@ export const getAllJob = createAsyncThunk(
       })
       if (resp.status >= 200 && resp.status < 300) {
         const dataJson = await resp.json()
-        dispatch(setAllJob(dataJson?.response?.content))
+        const contents = dataJson?.response?.content || dataJson?.response
+        dispatch(setAllJob(contents))
       }
     } catch (e) {
       console.log(e)
@@ -28,6 +34,7 @@ export const getAllJob = createAsyncThunk(
 export const addNewJob = createAsyncThunk(
   'job/add',
   async (data, { dispatch, rejectWithValue }) => {
+    const token = localStorage.getItem('auth_token')
     if (!token) {
       dispatch(
         setAllJob({
@@ -49,6 +56,8 @@ export const addNewJob = createAsyncThunk(
         setAlert({ type: 'success', content: 'Thêm công việc thành công' }),
       )
       dispatch(getAllJob())
+    } else {
+      dispatch(setAlert({ type: 'error', content: 'Hãy kiểm tra lại dữ liệu' }))
     }
     dispatch(setActionStatus(resp.status))
   },
@@ -84,59 +93,56 @@ export const deleteJob = createAsyncThunk(
 )
 
 export const getJobById = createAsyncThunk(
-  "/jobs/id",
+  '/jobs/id',
   async (id, { dispatch, rejectWithValue }) => {
     try {
-      let uri = `${API.uri}/jobs/${id}`;
+      const token = localStorage.getItem('auth_token')
+      let uri = `${API.uri}/jobs/${id}`
 
       const resp = await fetch(uri, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
       if (resp.status >= 200 && resp.status < 300) {
-        const jsonData = await resp.json();
-        dispatch(setSingleJob(jsonData));
-        
+        const jsonData = await resp.json()
+        dispatch(setSingleJob(jsonData))
       }
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-  }
-);
+  },
+)
 
 export const updateJob = createAsyncThunk(
-  "/jobs/id",
+  '/jobs/id',
   async (data, { dispatch, rejectWithValue }) => {
     try {
-      console.log("here");
-      const token = localStorage.getItem("auth_token");
+      const token = localStorage.getItem('auth_token')
       const resp = await fetch(`${API.uri}/jobs/${data.id}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
-      });
+      })
       if (resp.status >= 200 && resp.status < 300) {
-        dispatch(
-          setAlert({ type: "success", content: "Update role success" })
-        );
-        dispatch(getAllJob());
+        dispatch(setAlert({ type: 'success', content: 'Update role success' }))
+        dispatch(getAllJob())
       } else {
         dispatch(
           setAlert({
-            type: "error",
-            content: resp.json()?.defaultMessage ?? "Update role error ",
-          })
-        );
+            type: 'error',
+            content: resp.json()?.defaultMessage ?? 'Update role error ',
+          }),
+        )
         dispatch(getAllJob())
       }
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-  }
-);
+  },
+)

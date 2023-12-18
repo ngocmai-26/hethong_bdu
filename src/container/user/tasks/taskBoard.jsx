@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import LayoutTask from ".";
 import { getAllJob } from "../../../thunks/JobsThunk";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { status } from "../../../constants/fakedata";
 import { Link } from "react-router-dom";
+import { setSearchJob } from "../../../slices/JobsSlice";
 
 function TaskBoard() {
   const { allJob, searchJobs } = useSelector((state) => state.jobsReducer);
@@ -13,7 +14,13 @@ function TaskBoard() {
       dispatch(getAllJob());
     }
   }, []);
-  console.log(allJob)
+
+  useEffect(() => {
+    if (allJob.length > 0) {
+      dispatch(setSearchJob(allJob));
+    }
+  }, [dispatch, allJob])
+  
   return (
     <LayoutTask>
       <div className="flex flex-col">

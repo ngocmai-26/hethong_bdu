@@ -1,6 +1,11 @@
+import { useSelector } from "react-redux";
 import Profile from ".";
 
 function ManagerUsers() {
+  const info = JSON.parse(localStorage.getItem("auth_info"));
+  const { allUser } = useSelector((state) => state.userReducer);
+  console.log(allUser)
+  
   return (
     <>
       <Profile>
@@ -48,7 +53,7 @@ function ManagerUsers() {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        <tr className="hover:bg-gray-100">
+                        {allUser.map((item) => item.user.manger === info.id? (<tr className="hover:bg-gray-100">
                           <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap">
                             <div className="text-sm text-gray-900">
                               1
@@ -71,7 +76,8 @@ function ManagerUsers() {
                             maibaby@gmail.com
                           </td>
 
-                        </tr>
+                        </tr>):(<></>) )}
+                        
                       </tbody>
                     </table>
                   </div>

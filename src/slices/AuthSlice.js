@@ -20,8 +20,6 @@ const AuthSlice = createSlice({
     },
     setUser: (state, { payload }) => {
       state.user = payload
-      
-      localStorage.setItem('auth_info', JSON.stringify(payload))
     },
     setActionStatus: (state, { payload }) => {
       state.actionStatusCode = payload
@@ -46,7 +44,6 @@ const AuthSlice = createSlice({
     logout: (state) => {
       localStorage.removeItem('auth_info')
       localStorage.removeItem('auth_token')
-      localStorage.removeItem('auth_role')
       state = initState
       window.location.assign(window.location.href)
     },

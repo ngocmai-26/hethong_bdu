@@ -154,8 +154,9 @@ function Header() {
                 />
               </div>
               <ul
-                className="absolute w-full text-start border shadow-md rounded-md bg-white"
+                className="absolute text-start border shadow-md rounded-md bg-white"
                 id="disclosure-1"
+                style={{minWidth: "150px"}}
               >
                 <li className="hover:bg-gray-50 w-full mt-0">
                   <Link

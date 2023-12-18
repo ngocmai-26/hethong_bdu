@@ -31,8 +31,8 @@ function KPIManagerDetail() {
     if (id) {
       dispatch(getKPIManagerById(id));
     }
-  }, []);
-  console.log(singleKpiManager                                                                                                                                                                                                                                                                                                                                                                  )
+  }, []);         
+  
   return (
     <LayoutAdmin>
       <div className="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 ">

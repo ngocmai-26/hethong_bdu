@@ -3,40 +3,125 @@ import Profile from ".";
 import { useDispatch } from "react-redux";
 import { setAlert } from "../../../slices/AlertSlice";
 import { changePassword } from "../../../thunks/AuthThunk";
+import moment from "moment";
+import { updateUser } from "../../../thunks/UserThunk";
 
 function Account() {
-  const info = JSON.parse(localStorage.getItem('auth_info'))
+  const info = JSON.parse(localStorage.getItem("auth_info"));
+  const auth_role = JSON.parse(localStorage.getItem("auth_role"));
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [hiddenChangePassword, setHiddenChangePassword] = useState(true);
+  const [dataAccount, setDataAccount] = useState({})
+
+
   const handleHiddenChangePassword = () => {
     setHiddenChangePassword(!hiddenChangePassword);
   };
   const dispatch = useDispatch();
-  const handleChangePassword = () => {
-    if (window.confirm("notify_agree_change_password")) {
-      if (oldPassword.length <= 0) {
-        dispatch(
-          setAlert({
-            type: "error",
-            content: "notify_valid_old_password",
-          })
-        );
-        return;
-      }
-      if (newPassword.length <= 0) {
-        dispatch(
-          setAlert({
-            type: "error",
-            content: "notify_valid_new_password",
-          })
-        );
-        return;
-      }
-      dispatch(changePassword({ userName, oldPassword, newPassword }));
-    }
+
+  //Chaeck mật khẩu
+  const checkPasswordStrength = (password) => {
+    // Đặt các yêu cầu mật khẩu của bạn ở đây
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasDigits = /\d/.test(password);
+    const hasSpecialChars = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
+
+    // Kiểm tra tất cả các điều kiện
+    const isStrongPassword =
+      password.length >= minLength &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasDigits &&
+      hasSpecialChars;
+
+    return isStrongPassword;
   };
+
+  const handleChangePassword = () => {
+    if (oldPassword.length <= 0) {
+      dispatch(
+        setAlert({
+          type: "error",
+          content: "Mật khẩu cũ không được bỏ trống",
+        })
+      );
+      return;
+    }
+    if (newPassword.length <= 0) {
+      dispatch(
+        setAlert({
+          type: "error",
+          content: "Mật khẩu mới không được bỏ trống",
+        })
+      );
+      return;
+    }
+    if (confirmNewPassword.length <= 0) {
+      dispatch(
+        setAlert({
+          type: "error",
+          content: "Mật khẩu không được bỏ trống",
+        })
+      );
+      return;
+    }
+    if (newPassword === oldPassword) {
+      dispatch(
+        setAlert({
+          type: "error",
+          content: "Mật khẩu mới không được trùng với mật khẩu cũ",
+        })
+      );
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      dispatch(
+        setAlert({
+          type: "error",
+          content: "Mật khẩu mới và xác nhận mật khẩu không khớp",
+        })
+      );
+      return;
+    }
+    const isStrong = checkPasswordStrength(newPassword);
+    if (!isStrong) {
+      dispatch(
+        setAlert({
+          type: "error",
+          content: "Mật khẩu mới không đủ mạnh",
+        })
+      );
+      return;
+    }
+    dispatch(
+      changePassword({ userName: info?.email, oldPassword, newPassword })
+    );
+  };
+
+  const handleUpdateAccount = () => {
+    if (dataAccount.length !==0) {
+      const data = {
+        id: info.id,
+        roleName: auth_role.roleName,
+        fullName: dataAccount.fullName? dataAccount.fullName: info.fullName,
+        email: dataAccount.email? dataAccount.email: info.email,
+        phone: dataAccount.phone? dataAccount.phone: info.phone,
+        phong_ban: dataAccount.phong_ban? dataAccount.phong_ban: info.phone,
+        birthday: dataAccount.birthday? dataAccount.birthday: info.phong_ban
+      }
+      dispatch(updateUser(data)).then((reps) => {
+        setDataAccount({})
+      }
+
+      )
+    }
+  }
+
   return (
     <>
       <Profile>
@@ -79,7 +164,8 @@ function Account() {
                     <input
                       type="text"
                       name="fullName"
-                      value={info?.fullName}
+                      defaultValue={info?.fullName}
+                      onChange={(e) => setDataAccount({...dataAccount, fullName: e.target.value})}
                       id="fullName"
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
                       placeholder="Bonnie"
@@ -120,6 +206,7 @@ function Account() {
                     <input
                       type="email"
                       name="email"
+                      onChange={(e) => setDataAccount({...dataAccount, email: e.target.value})}
                       value={info?.email}
                       id="email"
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
@@ -139,6 +226,7 @@ function Account() {
                       type="text"
                       name="phone"
                       value={info?.phone}
+                      onChange={(e) => setDataAccount({...dataAccount, phone: e.target.value})}
                       id="phone"
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
                       placeholder="Nhập vào số điện thoại"
@@ -150,16 +238,38 @@ function Account() {
               <div className="address border-b-2 border-b-stone-100 py-5">
                 <div className="grid grid-cols-5 gap-5">
                   <div className="my-auto">
-                    <span className="font-medium text-xs">Địa chỉ:</span>
+                    <span className="font-medium text-xs">Ngày sinh:</span>
+                  </div>
+                  <div className="col-span-2">
+                    <input
+                      type="date"
+                      name="address"
+                      value= {moment(
+                        info?.birthday
+                      ).format("YYYY-MM-DD")}
+                      onChange={(e) => setDataAccount({...dataAccount, birthday: e.target.value})}
+                      id="address"
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
+                     
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="phongban border-b-2 border-b-stone-100 py-5">
+                <div className="grid grid-cols-5 gap-5">
+                  <div className="my-auto">
+                    <span className="font-medium text-xs">Phòng ban:</span>
                   </div>
                   <div className="col-span-2">
                     <input
                       type="text"
-                      name="address"
-                      defaultValue="mai@gmail.com"
-                      id="address"
+                      name="phongban"
+                      value={info?.phong_ban}
+                      onChange={(e) => setDataAccount({...dataAccount, phong_ban: e.target.value})}
+                      id="phongban"
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-1.5"
-                      placeholder="mai@gmail.com"
+                
                       required
                     />
                   </div>
@@ -170,6 +280,7 @@ function Account() {
             <div className="button text-right">
               <button
                 type="button"
+                onClick={handleUpdateAccount}
                 className="bg-blue-500 text-white py-1.5 px-3.5 rounded-md text-sm "
               >
                 Lưu
@@ -235,19 +346,20 @@ function Account() {
               </div>
               <form action="" className="py-0  ">
                 <div className="border-b-2 py-3">
-                <div className="currentPassword grid grid-cols-3 gap-5 py-2">
+                  {/* <div className="currentPassword grid grid-cols-3 gap-5 py-2">
                     <label htmlFor="" className="text-sm my-auto">
                       Tên đăng nhập:
                     </label>
                     <div className="col-span-2">
                       <input
                         type="text"
+                        value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                         id="currentPassword"
                         className="rounded-sm w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="currentPassword grid grid-cols-3 gap-5 py-2">
                     <label htmlFor="" className="text-sm my-auto">
                       Mật khẩu hiện tại:
@@ -256,6 +368,7 @@ function Account() {
                       <input
                         type="password"
                         id="currentPassword"
+                        value={oldPassword}
                         onChange={(e) => setOldPassword(e.target.value)}
                         className="rounded-sm w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
                       />
@@ -270,23 +383,27 @@ function Account() {
                       <input
                         type="password"
                         id="newPassword"
+                        value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         className="rounded-sm w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
                       />
                     </div>
                   </div>
-                  {/* <div className="repeatPassword grid grid-cols-3 gap-5 py-2">
+
+                  <div className="confirmNewPassword grid grid-cols-3 gap-5 py-2">
                     <label htmlFor="" className="text-sm my-auto">
                       Nhập lại mật khẩu mới:
                     </label>
                     <div className="col-span-2">
                       <input
                         type="password"
-                        id="repeatPassword"
+                        id="confirmNewPassword"
+                        value={confirmNewPassword}
+                        onChange={(e) => setConfirmNewPassword(e.target.value)}
                         className="rounded-sm w-full border border-slate-200 outline-slate-200 text-sm leading-3 p-2 me-4"
                       />
                     </div>
-                  </div> */}
+                  </div>
                 </div>
                 <div className="button text-right pt-5">
                   <button

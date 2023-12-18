@@ -30,6 +30,7 @@ import KPICateDetail from "../container/admin/kpicategory/kpi-cate-detail.jsx";
 import ConfirmPassword from "../container/auth/confirm_password.jsx";
 import KPIManager from "../container/admin/kpimanager/index.jsx";
 import KPIManagerDetail from "../container/admin/kpimanager/kpi-manager-detail.jsx";
+import AdminJobManager from "../container/admin/jobsmanager/index.jsx";
 
   
 export const GeneralRoute = () => {
@@ -73,18 +74,19 @@ export const LoggedRoute = () => {
       <Route path="/kpi_categories_detail/:id" element={<KPICateDetail />}></Route>
       <Route path="/category-role" element={<CategoryTarget />}></Route>
       <Route path="/quan-ly-bao-cao-cong-viec" element={<JobManager />}></Route>
+      <Route path="/jobs-manager" element={<AdminJobManager />}></Route>
       <Route path="*" element={role?.id === 1?  <AccountManager />: <DashBoard />}></Route>
     </Routes>
   );
 };
 function Router() {
-  const { logged } = useSelector((state) => state.authReducer);
+  const { logged } = useSelector((state) => state.authReducer);;
   
 
   useLayoutEffect(() => {}, [logged]);
   return (
     <BrowserRouter>
-      {!logged  ? <GeneralRoute /> : <LoggedRoute />}
+      {!logged ? <GeneralRoute /> : <LoggedRoute />}
       {/* <LoggedRoute /> */}
     </BrowserRouter>
   );

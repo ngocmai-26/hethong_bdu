@@ -21,22 +21,26 @@ function Category() {
   const handleHiddenCreate = () => {
     setIsHiddenCreate(!isHiddenCreate);
   };
+  useLayoutEffect(() => {
+    if (allPermission.length <= 0) {
+      dispatch(getAllPermissions());
+    }
+  }, [])
+  useEffect(() => {
+    if (allPermission.length > 0) {
+       dispatch(setSearchPermissions(allPermission?.response)); 
+    }
+  }, [allPermission, dispatch])
+
+
 
   useEffect(() => {
-    const listSearchPermissions = searchPermission?.filter((item) => item?.permissionName?.toLowerCase().includes(search.toLowerCase()))
+    const listSearchPermissions = allPermission?.response?.filter((item) => item?.permissionName?.toLowerCase().includes(search.toLowerCase()))
     if (listSearchPermissions?.length !==0) {
       dispatch(setSearchPermissions(listSearchPermissions));
     }
   }, [search])
   
-  useEffect(() => {
-    if (allPermission.length <= 0) {
-      dispatch(getAllPermissions());
-    }else {
-      dispatch(setSearchPermissions(allPermission?.response)); 
-    }
-  }, [allPermission, dispatch])
-
 
   return (
     <LayoutAdmin>

@@ -4,12 +4,11 @@ import { API } from '../constants/api'
 import { setAlert } from '../slices/AlertSlice'
 import { setActionStatus, setKPIManager, setSingleKPIManager } from '../slices/KPIManagerSlice'
 
-const token = localStorage.getItem('auth_token')
-
 export const getAllKPIManager = createAsyncThunk(
   '/kpis',
   async (_, { dispatch, rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("auth_token");
       const resp = await fetch(`${API.uri}/kpis`, {
         method: 'GET',
         headers: {
@@ -30,6 +29,7 @@ export const getAllKPIManager = createAsyncThunk(
 export const addNewKPIManager = createAsyncThunk(
   'kpis',
   async (data, { dispatch, rejectWithValue }) => {
+    const token = localStorage.getItem("auth_token");
     if (!token) {
       dispatch(
         setKPIManager({
@@ -60,6 +60,7 @@ export const deleteKPIManager = createAsyncThunk(
   "/kpis/id",
   async (id, { dispatch, rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("auth_token");
       const resp = await fetch(`${API.uri}/kpis/${id}`, {
         method: "DELETE",
         headers: {
@@ -90,6 +91,7 @@ export const updateKPIManager = createAsyncThunk(
   "/kpis/id",
   async (data, { dispatch, rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("auth_token");
       const resp = await fetch(`${API.uri}/kpis/${data.id}`, {
         method: "PUT",
         headers: {
@@ -123,6 +125,7 @@ export const getKPIManagerById = createAsyncThunk(
   "/kpis/id",
   async (id, { dispatch, rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("auth_token");
       let uri = `${API.uri}/kpis/${id}`;
       const resp = await fetch(uri, {
         method: "GET",

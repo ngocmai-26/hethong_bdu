@@ -21,7 +21,6 @@ function RolesDetail() {
       dispatch(getRoleById(id));
     }
   }, []);
-  console.log(singleRole)
 
   return (
     <LayoutAdmin>

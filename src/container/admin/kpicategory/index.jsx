@@ -49,22 +49,25 @@ function CategoryKPI() {
     setIsHiddenCreate(!isHiddenCreate);
   };
   useEffect(() => {
-    const listSearchKpiCategories = searchKpiCategories?.filter((item) =>
+    const listSearchKpiCategories = allKpiCategories?.filter((item) =>
       item?.name?.toLowerCase().includes(search.toLowerCase())
     );
     if (listSearchKpiCategories?.length !== 0) {
       dispatch(setSearchKPICategories(listSearchKpiCategories));
     }
   }, [search]);
-  console.log(setSearchKPICategories);
 
   useEffect(() => {
-    if (allKpiCategories.length <= 0) {
-      dispatch(getAllKPICategories());
-    } else {
+    if (allKpiCategories.length > 0){
       dispatch(setSearchKPICategories(allKpiCategories));
     }
   }, [allKpiCategories, dispatch]);
+
+  useLayoutEffect(() => {
+    if (allKpiCategories.length <= 0) {
+      dispatch(getAllKPICategories());
+    } 
+  }, [])
 
   useLayoutEffect(() => {
     setUpdateKpiCategoriesName(kpiCategoriesDetail?.name);
@@ -89,7 +92,6 @@ function CategoryKPI() {
   };
 
   useEffect(() => {
-    console.log(isHiddenUpdate);
     if (actionStatusCode === 200) {
       setIsHiddenCreate(true);
       setIsHiddenUpdate(true);
@@ -148,7 +150,7 @@ function CategoryKPI() {
               </ol>
             </nav>
             <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl">
-              Tất cả các KPI
+              Tất cả các danh mục KPI
             </h1>
           </div>
           <div className="items-center justify-between flex md:divide-x md:divide-gray-100 ">
